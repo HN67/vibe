@@ -23,6 +23,9 @@ which contains the Flask site. This folder can be easily renamed.
 
 ### Running
 
-### Creating Apps
+A flask debug server can be run from the `site` directory with `flask run`,
+which starts a server on localhost.
 
 ### Example
+
+An example/base Flask app is entirely contained in `site/app.py`.
