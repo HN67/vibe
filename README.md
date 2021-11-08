@@ -19,6 +19,8 @@ which installs Django and several developement aids
 The Django site was initially created using `django-admin startproject site`
 (but this does not need to be repeated).
 
+The project was set up using Python 3.10
+
 ### Directory Structure
 
 The root repository is `vibe`, which then contains a folder called `site`
