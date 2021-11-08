@@ -20,5 +20,5 @@ from django.urls import include, path
 # to rearrange site url structure
 urlpatterns = [
     path("form/", include("form.urls")),
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
 ]
