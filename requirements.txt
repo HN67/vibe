@@ -1,4 +1,6 @@
 flask
+python-dotenv
+
 mypy
 black
 pylint
