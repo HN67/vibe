@@ -1,8 +1,13 @@
-from django.shortcuts import render
-import django.http as http
+"""Views logic."""
 
-def index(request):
+from django import http
+
+
+def index(request: http.HttpRequest) -> http.HttpResponse:
+    """Main index page."""
     return http.HttpResponse("Hello world.")
 
-def data(request):
+
+def data(request: http.HttpRequest) -> http.HttpResponse:
+    """Test JSON data endpoint."""
     return http.JsonResponse({"x": 3, "y": 4})

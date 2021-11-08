@@ -12,7 +12,12 @@ See <https://docs.djangoproject.com/en/3.2/intro/tutorial01/>
 Create a Python virtual environment using `python -m venv .venv`,
 and then activate according to platform.
 
-The Django site was initially created using `django-admin startproject site`.
+Install various packages by running `pip install -r requirements.txt`,
+which installs Django and several developement aids
+(which VSCode will use if you include the `settings.json` file that is checked in).)
+
+The Django site was initially created using `django-admin startproject site`
+(but this does not need to be repeated).
 
 ### Directory Structure
 

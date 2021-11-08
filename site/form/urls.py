@@ -1,3 +1,5 @@
+"""URL routing."""
+
 # path constructor
 from django.urls import path
 
@@ -8,5 +10,5 @@ from . import views
 # connects url patterns to functions
 urlpatterns = [
     path("", views.index, name="index"),
-    path("data", views.data, name="data")
+    path("data", views.data, name="data"),
 ]
