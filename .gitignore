@@ -1,0 +1,6 @@
+# Python virtual environment
+.venv
+# Python compiled files
+*.pyc
+# Default sqlite server django is trying to use
+*.sqlite3
