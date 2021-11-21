@@ -49,3 +49,20 @@ The database was created with `CREATE DATABASE vibe;`
 A user was created with `CREATE USER site@localhost IDENTIFIED BY 'password'`,
 and granted permissions with `GRANT ALL privileges ON vibe.* TO 'site'@localhost;`
 which gave the user full access to `vibe`.
+
+### Database Operation
+
+Log in as `root` with `mysql -u root -p` (password is blank, press enter).
+May instead need to do `mysql -u root -h localhost -p`.
+
+`SHOW DATABASES;` will list the databases on the server,
+`mysql.user` is a table containing various user data,
+e.g. `User` is the name of users.
+
+`User, Db, Host` from `mysql.db` somewhat shows priveleges of users.
+
+When connecting to the database,
+can connect from the same machine,
+using user `site`, host `localhost`, database `vibe`, and port `7777`
+(not clear on the significance of the port, just choose it randomly),
+and appropriate password for the user `site`.
