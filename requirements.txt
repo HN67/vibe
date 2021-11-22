@@ -1,0 +1,8 @@
+flask
+mariadb
+
+python-dotenv
+
+mypy
+black
+pylint
