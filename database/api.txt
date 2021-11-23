@@ -1,39 +1,58 @@
 LOW ENDPOINTS
 
 Description: Get list of moods
-URL: /api/mood
+URL: /api/moods
 Method: GET
 Input: None
 Output: [string]
 
 Description: Get list of tastes
-URL: /api/taste
+URL: /api/tastes/
 Method: GET
 Input: None
 Output: [string]
+
+Description: Get information on a taste
+URL: /api/tastes/<taste>
+Method: GET
+Input: taste: string
+Output: {"type": string}
+
+Description: Create / update a taste
+URL: /api/tastes/<taste>
+Method: PUT
+Input: taste: string
+{}
+Output: {"type": string}
+
+Description: Delete a taste
+URL: /api/tastes/<taste>
+Method: DELETE
+Input: taste: string
+Output: {"type": string}
 
 Description: Get list of colors
-URL: /api/color
+URL: /api/colors/
 Method: GET
 Input: None
 Output: [string]
 
-Description: Get information on color(s)
-URL: /api/color/info
+Description: Get information on a color
+URL: /api/colors/<color>
 Method: GET
-Input: [string]
-Output: [{
+Input: color: string
+Output: {
     "name": string,
     "hue": int,
     "saturation": int,
     "brightness": int,
-}]
+}
 
 Description: Create / update a color
-URL: /api/color
-Method: POST
-Input: {
-    "name": string,
+URL: /api/colors/<color>
+Method: PUT
+Input: color: string
+{
     "hue": int,
     "saturation": int,
     "brightness": int,
@@ -45,10 +64,10 @@ Output: {
     "brightness": int,
 }
 
-Descritpion: Delete a color
-URL: /api/color
+Description: Delete a color
+URL: /api/colors/<color>
 Method: DELETE
-Input: string
+Input: color: string
 Output: {
     "name": string,
     "hue": int,
