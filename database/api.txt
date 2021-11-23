@@ -1,0 +1,57 @@
+LOW ENDPOINTS
+
+Description: Get list of moods
+URL: /api/mood
+Method: GET
+Input: None
+Output: [string]
+
+Description: Get list of tastes
+URL: /api/taste
+Method: GET
+Input: None
+Output: [string]
+
+Description: Get list of colors
+URL: /api/color
+Method: GET
+Input: None
+Output: [string]
+
+Description: Get information on color(s)
+URL: /api/color/info
+Method: GET
+Input: [string]
+Output: [{
+    "name": string,
+    "hue": int,
+    "saturation": int,
+    "brightness": int,
+}]
+
+Description: Create / update a color
+URL: /api/color
+Method: POST
+Input: {
+    "name": string,
+    "hue": int,
+    "saturation": int,
+    "brightness": int,
+}
+Output: {
+    "name": string,
+    "hue": int,
+    "saturation": int,
+    "brightness": int,
+}
+
+Descritpion: Delete a color
+URL: /api/color
+Method: DELETE
+Input: string
+Output: {
+    "name": string,
+    "hue": int,
+    "saturation": int,
+    "brightness": int,
+}
