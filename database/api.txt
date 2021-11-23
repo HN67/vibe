@@ -12,24 +12,23 @@ Method: GET
 Input: None
 Output: [string]
 
-Description: Get information on a taste
-URL: /api/tastes/<taste>
-Method: GET
-Input: taste: string
-Output: {"type": string}
+    Description: Get information on a taste
+    URL: /api/tastes/<taste: string>
+    Method: GET
+    Input: None
+    Output: {"type": string}
 
-Description: Create / update a taste
-URL: /api/tastes/<taste>
-Method: PUT
-Input: taste: string
-{}
-Output: {"type": string}
+    Description: Create / update a taste
+    URL: /api/tastes/<taste: string>
+    Method: PUT
+    Input: {}
+    Output: {"type": string}
 
-Description: Delete a taste
-URL: /api/tastes/<taste>
-Method: DELETE
-Input: taste: string
-Output: {"type": string}
+    Description: Delete a taste
+    URL: /api/tastes/<taste: string>
+    Method: DELETE
+    Input: None
+    Output: {"type": string}
 
 Description: Get list of colors
 URL: /api/colors/
@@ -37,40 +36,39 @@ Method: GET
 Input: None
 Output: [string]
 
-Description: Get information on a color
-URL: /api/colors/<color>
-Method: GET
-Input: color: string
-Output: {
-    "name": string,
-    "hue": int,
-    "saturation": int,
-    "brightness": int,
-}
+    Description: Get information on a color
+    URL: /api/colors/<color: string>
+    Method: GET
+    Input: None
+    Output: {
+        "name": string,
+        "hue": int,
+        "saturation": int,
+        "brightness": int,
+    }
 
-Description: Create / update a color
-URL: /api/colors/<color>
-Method: PUT
-Input: color: string
-{
-    "hue": int,
-    "saturation": int,
-    "brightness": int,
-}
-Output: {
-    "name": string,
-    "hue": int,
-    "saturation": int,
-    "brightness": int,
-}
+    Description: Create / update a color
+    URL: /api/colors/<color: string>
+    Method: PUT
+    Input: {
+        "hue": int,
+        "saturation": int,
+        "brightness": int,
+    }
+    Output: {
+        "name": string,
+        "hue": int,
+        "saturation": int,
+        "brightness": int,
+    }
 
-Description: Delete a color
-URL: /api/colors/<color>
-Method: DELETE
-Input: color: string
-Output: {
-    "name": string,
-    "hue": int,
-    "saturation": int,
-    "brightness": int,
-}
+    Description: Delete a color
+    URL: /api/colors/<color: string>
+    Method: DELETE
+    Input: None
+    Output: {
+        "name": string,
+        "hue": int,
+        "saturation": int,
+        "brightness": int,
+    }
