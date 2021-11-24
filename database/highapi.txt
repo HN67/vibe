@@ -1,0 +1,9 @@
+Description: Modify a resource (i.e. client)
+
+Description: Create admin
+
+Description: Get admin by username
+
+Description: Create client
+
+Description: Get client by username
