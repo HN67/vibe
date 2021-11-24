@@ -23,3 +23,14 @@ name string
 
 music_genre
 name string
+
+admin
+id int
+permissions int
+
+client
+id int
+birthday date
+email string
+displayName string
+bio string

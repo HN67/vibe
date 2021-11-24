@@ -1,4 +1,8 @@
-"""Read a file denoting raw resource contents and produce an API schema."""
+"""Read a file denoting raw resource contents and produce an API schema.
+
+Run with something like
+`python utilities\\create_low_api.py < database\\raw.txt > database\\generated.txt`
+"""
 
 import itertools
 import logging
@@ -29,6 +33,7 @@ def print_schema(output: t.TextIO, resource: t.Tuple[str, t.Sequence[str]]) -> N
     logger.info(resource)
 
     key = attrs[0]
+    key_name, key_type = key
     others = attrs[1:]
 
     output_list = (
@@ -49,22 +54,22 @@ Description: Get list of {name}s
 URL: /api/{name}s/
 Method: GET
 Input: None
-Output: [string]
+Output: [{key_type}]
 
     Description: Get information on a {name}
-    URL: /api/{name}s/<{key[0]}: string>
+    URL: /api/{name}s/<{key_name}: {key_type}>
     Method: GET
     Input: None
     Output: {{{output_list}}}
 
     Description: Create / update a {name}
-    URL: /api/{name}s/<{key[0]}: string>
+    URL: /api/{name}s/<{key_name}: {key_type}>
     Method: PUT
     Input: {{{input_list}}}
     Output: {{{output_list}}}
 
     Description: Delete a {name}
-    URL: /api/{name}s/<{key[0]}: string>
+    URL: /api/{name}s/<{key_name}: {key_type}>
     Method: DELETE
     Input: None
     Output: {{{output_list}}}

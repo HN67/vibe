@@ -1,0 +1,4 @@
+/api/clients/<client>/results/
+/api/clients/<client>/results/<number>
+/api/<qualia>s/<identifier>/moods
+/api/moods/

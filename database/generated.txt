@@ -231,3 +231,85 @@ Output: [string]
         "name": string,
     }
 
+Description: Get list of admins
+URL: /api/admins/
+Method: GET
+Input: None
+Output: [int]
+
+    Description: Get information on a admin
+    URL: /api/admins/<id: int>
+    Method: GET
+    Input: None
+    Output: {
+        "id": int,
+        "permissions": int,
+    }
+
+    Description: Create / update a admin
+    URL: /api/admins/<id: int>
+    Method: PUT
+    Input: {
+        "permissions": int,
+    }
+    Output: {
+        "id": int,
+        "permissions": int,
+    }
+
+    Description: Delete a admin
+    URL: /api/admins/<id: int>
+    Method: DELETE
+    Input: None
+    Output: {
+        "id": int,
+        "permissions": int,
+    }
+
+Description: Get list of clients
+URL: /api/clients/
+Method: GET
+Input: None
+Output: [int]
+
+    Description: Get information on a client
+    URL: /api/clients/<id: int>
+    Method: GET
+    Input: None
+    Output: {
+        "id": int,
+        "birthday": date,
+        "email": string,
+        "displayName": string,
+        "bio": string,
+    }
+
+    Description: Create / update a client
+    URL: /api/clients/<id: int>
+    Method: PUT
+    Input: {
+        "birthday": date,
+        "email": string,
+        "displayName": string,
+        "bio": string,
+    }
+    Output: {
+        "id": int,
+        "birthday": date,
+        "email": string,
+        "displayName": string,
+        "bio": string,
+    }
+
+    Description: Delete a client
+    URL: /api/clients/<id: int>
+    Method: DELETE
+    Input: None
+    Output: {
+        "id": int,
+        "birthday": date,
+        "email": string,
+        "displayName": string,
+        "bio": string,
+    }
+
