@@ -1,5 +1,3 @@
-LOW ENDPOINTS
-
 Description: Get list of moods
 URL: /api/moods/
 Method: GET

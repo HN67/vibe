@@ -1,0 +1,25 @@
+mood
+name string
+
+taste
+type string
+
+scent
+name string
+family string
+
+color
+name string
+hue int
+saturation int
+brightness int
+
+shape
+name string
+sides int
+
+media_genre
+name string
+
+music_genre
+name string
