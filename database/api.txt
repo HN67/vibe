@@ -339,6 +339,39 @@ Output: [{"music_genre": string, "mood": string}]
     Input: {"music_genre": string, "mood": string}
     Output: {"music_genre": string, "mood": string}
 
+Description: Get list of users
+URL: /api/users/
+Method: GET
+Input: None
+Output: [int]
+
+Description: Create a user
+URL: /api/users/
+Method: POST
+Input: {"username": string}
+Output: {
+    "id": int,
+    "username": string,
+}
+
+    Description: Get information on a user
+    URL: /api/users/<id: int>
+    Method: GET
+    Input: None
+    Output: {
+        "id": int,
+        "username": string,
+    }
+
+    Description: Delete a user
+    URL: /api/users/<id: int>
+    Method: DELETE
+    Input: None
+    Output: {
+        "id": int,
+        "username": string,
+    }
+
 Description: Get list of admins
 URL: /api/admins/
 Method: GET
@@ -425,7 +458,7 @@ Description: Get list of results for a client
 URL: /api/clients/<client: int>/results/
 Method: GET
 Input: None
-Output: [{"number": int}]
+Output: [int]
 
 Description: Create a result for a client
 URL: /api/clients/<client: int>/results/
