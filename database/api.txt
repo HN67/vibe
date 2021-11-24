@@ -1,5 +1,3 @@
-LOW ENDPOINTS
-
 Description: Get list of moods
 URL: /api/moods/
 Method: GET
@@ -60,6 +58,24 @@ Output: [string]
         "type": string,
     }
 
+Description: Query connections of a taste
+URL: /api/tastes_connections
+Method: GET
+Input: {"taste": Optional[string], "mood": Optional[string]}
+Output: [{"taste": string, "mood": string}]
+
+    Description: Create a connection with a taste
+    URL: /api/tastes_connections
+    Method: POST
+    Input: {"taste": string, "mood": string}
+    Output: {"taste": string, "mood": string}
+
+    Description: Delete a connection with a taste
+    URL: /api/tastes_connections
+    Method: DELETE
+    Input: {"taste": string, "mood": string}
+    Output: {"taste": string, "mood": string}
+
 Description: Get list of scents
 URL: /api/scents/
 Method: GET
@@ -94,6 +110,24 @@ Output: [string]
         "name": string,
         "family": string,
     }
+
+Description: Query connections of a scent
+URL: /api/scents_connections
+Method: GET
+Input: {"scent": Optional[string], "mood": Optional[string]}
+Output: [{"scent": string, "mood": string}]
+
+    Description: Create a connection with a scent
+    URL: /api/scents_connections
+    Method: POST
+    Input: {"scent": string, "mood": string}
+    Output: {"scent": string, "mood": string}
+
+    Description: Delete a connection with a scent
+    URL: /api/scents_connections
+    Method: DELETE
+    Input: {"scent": string, "mood": string}
+    Output: {"scent": string, "mood": string}
 
 Description: Get list of colors
 URL: /api/colors/
@@ -138,6 +172,24 @@ Output: [string]
         "brightness": int,
     }
 
+Description: Query connections of a color
+URL: /api/colors_connections
+Method: GET
+Input: {"color": Optional[string], "mood": Optional[string]}
+Output: [{"color": string, "mood": string}]
+
+    Description: Create a connection with a color
+    URL: /api/colors_connections
+    Method: POST
+    Input: {"color": string, "mood": string}
+    Output: {"color": string, "mood": string}
+
+    Description: Delete a connection with a color
+    URL: /api/colors_connections
+    Method: DELETE
+    Input: {"color": string, "mood": string}
+    Output: {"color": string, "mood": string}
+
 Description: Get list of shapes
 URL: /api/shapes/
 Method: GET
@@ -173,6 +225,24 @@ Output: [string]
         "sides": int,
     }
 
+Description: Query connections of a shape
+URL: /api/shapes_connections
+Method: GET
+Input: {"shape": Optional[string], "mood": Optional[string]}
+Output: [{"shape": string, "mood": string}]
+
+    Description: Create a connection with a shape
+    URL: /api/shapes_connections
+    Method: POST
+    Input: {"shape": string, "mood": string}
+    Output: {"shape": string, "mood": string}
+
+    Description: Delete a connection with a shape
+    URL: /api/shapes_connections
+    Method: DELETE
+    Input: {"shape": string, "mood": string}
+    Output: {"shape": string, "mood": string}
+
 Description: Get list of media_genres
 URL: /api/media_genres/
 Method: GET
@@ -203,6 +273,24 @@ Output: [string]
         "name": string,
     }
 
+Description: Query connections of a media_genre
+URL: /api/media_genres_connections
+Method: GET
+Input: {"media_genre": Optional[string], "mood": Optional[string]}
+Output: [{"media_genre": string, "mood": string}]
+
+    Description: Create a connection with a media_genre
+    URL: /api/media_genres_connections
+    Method: POST
+    Input: {"media_genre": string, "mood": string}
+    Output: {"media_genre": string, "mood": string}
+
+    Description: Delete a connection with a media_genre
+    URL: /api/media_genres_connections
+    Method: DELETE
+    Input: {"media_genre": string, "mood": string}
+    Output: {"media_genre": string, "mood": string}
+
 Description: Get list of music_genres
 URL: /api/music_genres/
 Method: GET
@@ -232,6 +320,24 @@ Output: [string]
     Output: {
         "name": string,
     }
+
+Description: Query connections of a music_genre
+URL: /api/music_genres_connections
+Method: GET
+Input: {"music_genre": Optional[string], "mood": Optional[string]}
+Output: [{"music_genre": string, "mood": string}]
+
+    Description: Create a connection with a music_genre
+    URL: /api/music_genres_connections
+    Method: POST
+    Input: {"music_genre": string, "mood": string}
+    Output: {"music_genre": string, "mood": string}
+
+    Description: Delete a connection with a music_genre
+    URL: /api/music_genres_connections
+    Method: DELETE
+    Input: {"music_genre": string, "mood": string}
+    Output: {"music_genre": string, "mood": string}
 
 Description: Get list of admins
 URL: /api/admins/
@@ -313,4 +419,66 @@ Output: [int]
         "email": string,
         "displayName": string,
         "bio": string,
+    }
+
+Description: Get list of results for a client
+URL: /api/clients/<client: int>/results/
+Method: GET
+Input: None
+Output: [{"number": int}]
+
+Description: Create a result for a client
+URL: /api/clients/<client: int>/results/
+Method: POST
+Input: {
+    "mood": string,
+    "taste": string,
+    "scent": string,
+    "color": string,
+    "shape": string,
+    "media_genre": string,
+    "music_genre": string,
+}
+Output: {
+    "client": int,
+    "number": int,
+    "mood": string,
+    "taste": string,
+    "scent": string,
+    "color": string,
+    "shape": string,
+    "media_genre": string,
+    "music_genre": string,
+}
+
+    Description: Get a result for a client
+    URL: /api/clients/<client: int>/results/<number: int>
+    Method: GET
+    Input: None
+    Output: {
+        "client": int,
+        "number": int,
+        "mood": string,
+        "taste": string,
+        "scent": string,
+        "color": string,
+        "shape": string,
+        "media_genre": string,
+        "music_genre": string,
+    }
+
+    Description: Delete a result for a client
+    URL: /api/clients/<client: int>/results/<number: int>
+    Method: DELETE
+    Input: None
+    Output: {
+        "client": int,
+        "number": int,
+        "mood": string,
+        "taste": string,
+        "scent": string,
+        "color": string,
+        "shape": string,
+        "media_genre": string,
+        "music_genre": string,
     }

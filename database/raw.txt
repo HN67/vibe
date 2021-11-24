@@ -1,34 +1,34 @@
-mood
+mood default
 name string
 
-taste
+taste qualia
 type string
 
-scent
+scent qualia
 name string
 family string
 
-color
+color qualia
 name string
 hue int
 saturation int
 brightness int
 
-shape
+shape qualia
 name string
 sides int
 
-media_genre
+media_genre qualia
 name string
 
-music_genre
+music_genre qualia
 name string
 
-admin
+admin default
 id int
 permissions int
 
-client
+client default
 id int
 birthday date
 email string

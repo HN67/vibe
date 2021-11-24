@@ -26,7 +26,9 @@ def read_raw(file: t.TextIO) -> t.Iterable[t.Tuple[str, t.Sequence[str]]]:
 def print_schema(output: t.TextIO, resource: t.Tuple[str, t.Sequence[str]]) -> None:
     """Print a schema for the resource."""
 
-    name = resource[0]
+    logger.info(resource)
+    logger.info(resource[0].split(" "))
+    name, api_type = resource[0].split(" ")
     attrs = [p.split(" ") for p in resource[1]]
 
     logger.info(attrs)
@@ -74,6 +76,30 @@ Output: [{key_type}]
     Input: None
     Output: {{{output_list}}}
 """
+    if api_type == "qualia":
+        foreign_name = "mood"
+        foreign_type = "string"
+        extra = f"""
+Description: Query connections of a {name}
+URL: /api/{name}s_connections
+Method: GET
+Input: {{"{name}": Optional[{key_type}], "{foreign_name}": Optional[{foreign_type}]}}
+Output: [{{"{name}": {key_type}, "{foreign_name}": {foreign_type}}}]
+
+    Description: Create a connection with a {name}
+    URL: /api/{name}s_connections
+    Method: POST
+    Input: {{"{name}": {key_type}, "{foreign_name}": {foreign_type}}}
+    Output: {{"{name}": {key_type}, "{foreign_name}": {foreign_type}}}
+
+    Description: Delete a connection with a {name}
+    URL: /api/{name}s_connections
+    Method: DELETE
+    Input: {{"{name}": {key_type}, "{foreign_name}": {foreign_type}}}
+    Output: {{"{name}": {key_type}, "{foreign_name}": {foreign_type}}}
+"""
+        # dont strip leading newline
+        text += extra
     print(text[1:], file=output)
 
 

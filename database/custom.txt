@@ -1,4 +1,61 @@
-/api/clients/<client>/results/
-/api/clients/<client>/results/<number>
-/api/<qualia>s/<identifier>/moods
-/api/moods/
+Description: Get list of results for a client
+URL: /api/clients/<client: int>/results/
+Method: GET
+Input: None
+Output: [{"number": int}]
+
+Description: Create a result for a client
+URL: /api/clients/<client: int>/results/
+Method: POST
+Input: {
+    "mood": string,
+    "taste": string,
+    "scent": string,
+    "color": string,
+    "shape": string,
+    "media_genre": string,
+    "music_genre": string,
+}
+Output: {
+    "client": int,
+    "number": int,
+    "mood": string,
+    "taste": string,
+    "scent": string,
+    "color": string,
+    "shape": string,
+    "media_genre": string,
+    "music_genre": string,
+}
+
+    Description: Get a result for a client
+    URL: /api/clients/<client: int>/results/<number: int>
+    Method: GET
+    Input: None
+    Output: {
+        "client": int,
+        "number": int,
+        "mood": string,
+        "taste": string,
+        "scent": string,
+        "color": string,
+        "shape": string,
+        "media_genre": string,
+        "music_genre": string,
+    }
+
+    Description: Delete a result for a client
+    URL: /api/clients/<client: int>/results/<number: int>
+    Method: DELETE
+    Input: None
+    Output: {
+        "client": int,
+        "number": int,
+        "mood": string,
+        "taste": string,
+        "scent": string,
+        "color": string,
+        "shape": string,
+        "media_genre": string,
+        "music_genre": string,
+    }
