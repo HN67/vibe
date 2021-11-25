@@ -25,15 +25,25 @@ def create_app() -> flask.Flask:
     # def _index() -> str:
     #     return "<p>Hello world</p>"
 
-    def _index() -> flask.render_template:
+    def _index() -> str:
         return flask.render_template("index.html")
 
     @app.route("/profile")
-    def _profile() -> flask.render_template:
+    def _profile() -> str:
         return flask.render_template("profile.html")
 
+    @app.route("/login", methods=["GET", "POST"])
+    def _login():
+        error = None
+        if flask.request.method == "POST":
+            if flask.request.form["username"] != "testuser":
+                error = "Invalid Credentials. Please try again."
+            else:
+                return flask.redirect(flask.url_for("_profile"))
+        return flask.render_template("login.html", error=error)
+
     @app.route("/quiz")
-    def _quiz() -> flask.render_template:
+    def _quiz() -> str:
         return flask.render_template("quiz.html")
 
     # @app.route("/data", defaults={"name": None})
