@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Edit Profile</h1>
+<form action="" method="post">
+    <input type="text" placeholder="Display name" name="name" value="{{
+          request.form.displayname }}">
+    <input type="text" placeholder="Bio" name="bio" value="{{
+              request.form.bio }}">
+    <input class="btn btn-default btn-primary" type="submit" value="update">
+</form>
+{% endblock %}

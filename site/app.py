@@ -28,7 +28,7 @@ def create_app() -> flask.Flask:
     def _index() -> str:
         return flask.render_template("index.html")
 
-    @app.route("/profile")
+    @app.route("/profile/testuser")
     def _profile() -> str:
         return flask.render_template("profile.html")
 
@@ -42,9 +42,23 @@ def create_app() -> flask.Flask:
                 return flask.redirect(flask.url_for("_profile"))
         return flask.render_template("login.html", error=error)
 
-    @app.route("/quiz")
+    @app.route("/quiz", methods=["GET", "POST"])
     def _quiz() -> str:
-        return flask.render_template("quiz.html")
+        if flask.request.method == "POST":
+            if flask.request.form.get("v"):
+                return flask.redirect(flask.url_for("_result"))
+            elif flask.request.form.get("vands"):
+                return flask.redirect(flask.url_for("_result"))
+        elif flask.request.method == "GET":
+            return flask.render_template("quiz.html")
+
+    @app.route("/result")
+    def _result() -> str:
+        return flask.render_template("result.html")
+
+    @app.route("/edit", methods=["GET", "POST"])
+    def _editprofile():
+        return flask.render_template("editprofile.html")
 
     # @app.route("/data", defaults={"name": None})
     # @app.route("/data/<name>")
