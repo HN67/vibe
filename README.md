@@ -73,4 +73,5 @@ and appropriate password for the user `site`.
 ### Database Configuration
 
 In order to allow connections from LAN,
-edited `/etc/my.cnf`
+edited the configuration file `/etc/mysql/mariadb.conf.d/50-server.cnf`
+and changed `bind-address=127.0.0.1` to `0.0.0.0`.
