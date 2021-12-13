@@ -14,6 +14,15 @@ import requests
 #         return {"x": random.randint(1, 4), "y": random.randint(1, 4)}
 
 
+def api_url(name: str) -> str:
+    """Construct an absolute API URL from a relative URL.
+
+    For example, if the site is running on http localhost:5000,
+    api_url(flask.request, 'moods/happy') == http://localhost:5000/api/moods/happy
+    """
+    return flask.request.host_url + "/api/" + name
+
+
 def create_app() -> flask.Flask:
     """Create the Flask instance."""
 
@@ -52,7 +61,7 @@ def create_app() -> flask.Flask:
             ]
         )
 
-    @app.route("/data")
+    @app.route("/api/data")
     def _data() -> flask.Response:
         """Normal data."""
         return flask.jsonify({"x": 1})
@@ -63,11 +72,8 @@ def create_app() -> flask.Flask:
         # also look into requests.Session
         # for bulk requests
 
-        # gets base URL, e.g. 'http://localhost:5000/'
-        base_url = flask.request.host_url
-        endpoint = base_url + "data"
         # make request
-        resp = requests.get(endpoint)
+        resp = requests.get(api_url("data"))
         # parse response
         data = resp.json()
         cooler_data = {"y": data["x"] + 1}
