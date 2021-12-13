@@ -80,4 +80,20 @@ def create_app() -> flask.Flask:
         # return response
         return flask.jsonify(cooler_data)
 
+    # Usernames mock
+    known = {"alpha": 1, "beta": 2, "gamma": 3}
+
+    @app.route("/api/usernames")
+    def _usernames() -> flask.Response:
+        """Query a list of usernames."""
+        return flask.jsonify(list(known.keys()))
+
+    @app.route("/api/usernames/<username>")
+    def _username(username: str) -> flask.Response:
+        """Query a username."""
+        try:
+            return flask.jsonify({"id": known[username], "username": username})
+        except KeyError:
+            flask.abort(404)
+
     return app
