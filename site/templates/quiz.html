@@ -82,9 +82,18 @@
     </div>
 
     <div class="container mt-sm-5 my-1 flex-box text-right">
-        <button type="button"
-            style="background-color: #ababab; font-weight: 700;">View</button>
-            <button type="button" style="background-color: #ababab; font-weight: 700;">View & Save</button>
+        <form method="post" action="">
+            <button class="btn btn-primary" type="submit" name="v" value="v"> View</button>
+            
+        </form>
+    </div>
+    <div class="container mt-sm-5 my-1 flex-box text-right">
+        
+        <form action="" method="post">
+            <input type="text" placeholder="Username" name="username" value="{{
+                  request.form.username }}">
+            <button class="btn btn-primary" type="submit" name="vands" value="vands"> View and Save </button>
+        </form>
     </div>
 </div>
     {% endblock %}

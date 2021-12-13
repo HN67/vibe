@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div>
+    <!-- refrences https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars -->
+    <h1>Name: Test</h1>
+    <p>Bio: Some text</p>
+    <a href="{{ url_for('_editprofile') }}">Edit your profile</a>
+    <hr>
+
     <h1>{% block title %} Profile {% endblock %}</h1>
     <table class="table">
         <thead class="thead-dark">
