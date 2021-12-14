@@ -7,6 +7,8 @@ import flask
 import requests
 from requests.api import request
 
+import api
+
 # def get_data(name: t.Optional[str]) -> t.Mapping[str, int]:
 #     """Obtain data from *somewhere*."""
 #     if name:
@@ -182,5 +184,7 @@ def create_app() -> flask.Flask:
             )
         except KeyError:
             flask.abort(404)
+
+    app = api.build_api(app)
 
     return app
