@@ -20,7 +20,7 @@ def api_url(name: str) -> str:
     For example, if the site is running on http localhost:5000,
     api_url(flask.request, 'moods/happy') == http://localhost:5000/api/moods/happy
     """
-    return flask.request.host_url + "/api/" + name
+    return flask.request.host_url + "api/" + name
 
 
 def create_app() -> flask.Flask:
@@ -37,18 +37,27 @@ def create_app() -> flask.Flask:
     def _index() -> str:
         return flask.render_template("index.html")
 
-    @app.route("/profile/testuser")
-    def _profile() -> str:
-        return flask.render_template("profile.html")
+    @app.route("/profile/<username>")
+    def _profile(username) -> str:
+        p = "usernames/" + username
+        print(p)
+        resp = requests.get(api_url(p))
+        # parse response
+        user = resp.json()
+        p = "client/" + str(user["id"])
+        resp = requests.get(api_url(p))
+        userinfo = resp.json()
+        return flask.render_template(
+            "profile.html", username=username, userinfo=userinfo
+        )
 
     @app.route("/login", methods=["GET", "POST"])
     def _login():
         error = None
         if flask.request.method == "POST":
-            if flask.request.form["username"] != "testuser":
-                error = "Invalid Credentials. Please try again."
-            else:
-                return flask.redirect(flask.url_for("_profile"))
+            return flask.redirect(
+                flask.url_for("_profile", username=flask.request.form["username"])
+            )
         return flask.render_template("login.html", error=error)
 
     @app.route("/quiz", methods=["GET", "POST"])
@@ -65,8 +74,8 @@ def create_app() -> flask.Flask:
     def _result() -> str:
         return flask.render_template("result.html")
 
-    @app.route("/edit", methods=["GET", "POST"])
-    def _editprofile():
+    @app.route("/<username>/edit", methods=["GET", "POST"])
+    def _editprofile(username):
         return flask.render_template("editprofile.html")
 
     # @app.route("/data", defaults={"name": None})
@@ -106,6 +115,13 @@ def create_app() -> flask.Flask:
 
     # Usernames mock
     known = {"alpha": 1, "beta": 2, "gamma": 3}
+    someuser = {
+        "id": 1,
+        "birthday": "MM/DD/YYYY",
+        "email": "alpha@gmail.com",
+        "displayName": "a",
+        "bio": "bla bla bla",
+    }
 
     @app.route("/api/usernames")
     def _usernames() -> flask.Response:
@@ -117,6 +133,22 @@ def create_app() -> flask.Flask:
         """Query a username."""
         try:
             return flask.jsonify({"id": known[username], "username": username})
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/client/<id>")
+    def _client(id: str) -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(
+                {
+                    "id": id,
+                    "birthday": someuser["birthday"],
+                    "email": someuser["email"],
+                    "displayName": someuser["displayName"],
+                    "bio": someuser["bio"],
+                }
+            )
         except KeyError:
             flask.abort(404)
 
