@@ -26,6 +26,10 @@ which contains the Flask site. This folder can be easily renamed.
 A flask debug server can be run from the `site` directory with `flask run`,
 which starts a server on localhost.
 
+Making the site available on other hosts requires hosting on the external interface,
+for example my pi currently has an address of `192.168.1.64`,
+so the site should be started with `flask run -h 192.168.1.64`.
+
 The site requires a configuration file to run, named `config.toml` in the `site` directory.
 This config file should contain a `[database]` section with connection parameters.
 
