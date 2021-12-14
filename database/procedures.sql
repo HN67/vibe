@@ -1,6 +1,6 @@
 USE vibe;
 
-DELIMETER //
+DELIMITER //
 
 -- /api/moods/
 CREATE OR REPLACE PROCEDURE get_moods()
