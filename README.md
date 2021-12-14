@@ -26,6 +26,20 @@ which contains the Flask site. This folder can be easily renamed.
 A flask debug server can be run from the `site` directory with `flask run`,
 which starts a server on localhost.
 
+The site requires a configuration file to run, named `config.toml` in the `site` directory.
+This config file should contain a `[database]` section with connection parameters.
+
+For example,
+
+```toml
+[database]
+user="site"
+password="password"
+host="address"
+port=3306
+database="vibe"
+```
+
 ### Example
 
 An example/base Flask app is entirely contained in `site/app.py`.
