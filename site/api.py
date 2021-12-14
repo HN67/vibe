@@ -16,7 +16,7 @@ class Database:
         self.cursor = self.connection.cursor()
 
     def execute(
-        self, query: str, arguments: t.Optional[t.Tuple[t.Any, ...]]
+        self, query: str, arguments: t.Optional[t.Tuple[t.Any, ...]] = None
     ) -> t.Iterable[t.Tuple[t.Any, ...]]:
         """Execute a query on the database."""
         self.cursor.execute(query, arguments)
@@ -41,3 +41,12 @@ def build_api(app: flask.Flask) -> flask.Flask:
 
     Returns the app (which has had more routes registered).
     """
+
+    @app.get("/api/moods/")
+    def _moods() -> flask.Response:
+        """Query list of moods."""
+        return flask.jsonify(
+            [mood for (mood,) in get_db().execute("CALL get_moods();")]
+        )
+
+    return app
