@@ -1,7 +1,7 @@
 DELIMETER //
 
 -- /api/moods/
-CREATE PROCEDURE get_moods()
+CREATE OR REPLACE PROCEDURE get_moods()
     READS SQL DATA
     BEGIN
         SELECT (name)

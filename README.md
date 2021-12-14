@@ -84,6 +84,12 @@ using user `site`, host `localhost`, database `vibe`, and port `7777`
 (not clear on the significance of the port, just choose it randomly),
 and appropriate password for the user `site`.
 
+To actually setup up the database,
+connect with `mysql -u root -D vibe` to automatically use `vibe`.
+
+The `SOURCE` SQL command should be able to be used to execute
+large files, e.g. `tables.sql` and `procedures.sql`.
+
 ### Database Configuration
 
 In order to allow connections from LAN,
