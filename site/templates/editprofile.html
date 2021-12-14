@@ -3,10 +3,14 @@
 {% block content %}
 <h1>Edit Profile</h1>
 <form action="" method="post">
-    <input type="text" placeholder="Display name" name="name" value="{{
+    <input type="text" placeholder="{{userinfo['displayName']}}" name="name" value="{{
           request.form.displayname }}">
-    <input type="text" placeholder="Bio" name="bio" value="{{
+    <input type="text" placeholder="{{userinfo['bio']}}" name="bio" value="{{
               request.form.bio }}">
+    <input type="text" placeholder="{{userinfo['email']}}" name="email" value="{{
+                  request.form.email }}">
+    <input type="text" placeholder="{{userinfo['birthday']}}" name="birthday" value="{{
+                      request.form.birthday }}">
     <input class="btn btn-default btn-primary" type="submit" value="update">
 </form>
 {% endblock %}
