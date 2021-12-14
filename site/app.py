@@ -26,6 +26,14 @@ def getuserinfo(username):
     return userinfo
 
 
+def getuserresults(id):
+    p = "clients/" + id + "/results/all"
+    resp = requests.get(api_url(p))
+    # parse response
+    results = resp.json()
+    return results
+
+
 def currentinfo(s, userinfo):
     if flask.request.form[s] != "":
         return flask.request.form[s]
@@ -59,8 +67,10 @@ def create_app() -> flask.Flask:
     @app.route("/profile/<username>")
     def _profile(username) -> str:
         userinfo = getuserinfo(username)
+        results = getuserresults(userinfo["id"])
+        print(results)
         return flask.render_template(
-            "profile.html", username=username, userinfo=userinfo
+            "profile.html", username=username, userinfo=userinfo, results=results
         )
 
     @app.route("/login", methods=["GET", "POST"])
@@ -75,16 +85,10 @@ def create_app() -> flask.Flask:
     @app.route("/quiz", methods=["GET", "POST"])
     def _quiz() -> str:
         if flask.request.method == "POST":
-            if flask.request.form.get("v"):
-                return flask.redirect(flask.url_for("_result"))
-            elif flask.request.form.get("vands"):
-                return flask.redirect(flask.url_for("_result"))
-        elif flask.request.method == "GET":
-            return flask.render_template("quiz.html")
-
-    @app.route("/result")
-    def _result() -> str:
-        return flask.render_template("result.html")
+            return flask.redirect(
+                flask.url_for("_profile", username=flask.request.form["username"])
+            )
+        return flask.render_template("quiz.html")
 
     @app.route("/<username>/edit", methods=["GET", "POST"])
     def _editprofile(username):
@@ -180,6 +184,26 @@ def create_app() -> flask.Flask:
                     "bio": someuser["bio"],
                 }
             )
+        except KeyError:
+            flask.abort(404)
+
+    someresult = {
+        "client": 1,
+        "number": 1,
+        "mood": "Sad",
+        "taste": "Sour",
+        "scent": "Bitter",
+        "color": "Gray",
+        "shape": "Line",
+        "media_genre": "Sad",
+        "music_genre": "Sad pop",
+    }
+
+    @app.route("/api/clients/<id>/results/all")
+    def _results(id: str) -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify([someresult, someresult])
         except KeyError:
             flask.abort(404)
 
