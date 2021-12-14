@@ -1,3 +1,5 @@
+USE vibe;
+
 DELIMETER //
 
 -- /api/moods/

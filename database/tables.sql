@@ -1,3 +1,5 @@
+USE vibe;
+
 CREATE TABLE Mood (
     name NVARCHAR(255) NOT NULL,
     PRIMARY KEY (name)
