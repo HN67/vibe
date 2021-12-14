@@ -8,9 +8,9 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Mood</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options"> 
-                <label class="options">option1<input type="radio" name="radio"> <span class="checkmark"></span> </label>
-                <label class="options">option2 <input type="radio" name="radio"> <span class="checkmark"></span> </label>
-                <label class="options">option3 <input type="radio" name="radio"> <span class="checkmark"></span> </label>
+                {% for mood in moods %}
+                    <label class="options">{{mood['name']}}<input type="radio" name="mood"> <span class="checkmark"></span> </label>
+                {%endfor%}
             </div>
         </div>
     </div>
@@ -19,9 +19,9 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Color</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                <label class="options">option1<input type="radio" name="radio2"> <span class="checkmark"></span> </label>
-                <label class="options">option2 <input type="radio" name="radio2"> <span class="checkmark"></span> </label>
-                <label class="options">option3 <input type="radio" name="radio2"> <span class="checkmark"></span> </label>
+                {% for color in colors %}
+                <label class="options">{{color['name']}}<input type="radio" name="color"> <span class="checkmark"></span> </label>
+                {%endfor%}
             </div>
         </div>
     </div>
@@ -30,9 +30,9 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Shape</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                <label class="options">option1<input type="radio" name="radio3"> <span class="checkmark"></span> </label>
-                <label class="options">option2 <input type="radio" name="radio3"> <span class="checkmark"></span> </label>
-                <label class="options">option3 <input type="radio" name="radio3"> <span class="checkmark"></span> </label>
+                {% for shape in shapes %}
+                <label class="options">{{shape['name']}}<input type="radio" name="shape"> <span class="checkmark"></span> </label>
+                {%endfor%}
             </div>
         </div>
     </div>
@@ -41,9 +41,9 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Scent</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                <label class="options">option1<input type="radio" name="radio4"> <span class="checkmark"></span> </label>
-                <label class="options">option2 <input type="radio" name="radio4"> <span class="checkmark"></span> </label>
-                <label class="options">option3 <input type="radio" name="radio4"> <span class="checkmark"></span> </label>
+                {% for scent in scents %}
+                <label class="options">{{scent['name']}}<input type="radio" name="scent"> <span class="checkmark"></span> </label>
+                {%endfor%}
             </div>
         </div>
     </div>
@@ -52,9 +52,9 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Taste</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                <label class="options">option1<input type="radio" name="radio5"> <span class="checkmark"></span> </label>
-                <label class="options">option2 <input type="radio" name="radio5"> <span class="checkmark"></span> </label>
-                <label class="options">option3 <input type="radio" name="radio5"> <span class="checkmark"></span> </label>
+                {% for taste in tastes %}
+                <label class="options">{{taste['type']}}<input type="radio" name="taste"> <span class="checkmark"></span> </label>
+                {%endfor%}
             </div>
         </div>
     </div>
@@ -63,9 +63,9 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Music</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                <label class="options">option1<input type="radio" name="radio6"> <span class="checkmark"></span> </label>
-                <label class="options">option2 <input type="radio" name="radio6"> <span class="checkmark"></span> </label>
-                <label class="options">option3 <input type="radio" name="radio6"> <span class="checkmark"></span> </label>
+                {% for m in music %}
+                <label class="options">{{m['name']}}<input type="radio" name="music"> <span class="checkmark"></span> </label>
+                {%endfor%}
             </div>
         </div>
     </div>
@@ -74,19 +74,12 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Media</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                <label class="options">option1<input type="radio" name="radio7"> <span class="checkmark"></span> </label>
-                <label class="options">option2 <input type="radio" name="radio7"> <span class="checkmark"></span> </label>
-                <label class="options">option3 <input type="radio" name="radio7"> <span class="checkmark"></span> </label>
+                {% for m in media %}
+                <label class="options">{{m['name']}}<input type="radio" name="media"> <span class="checkmark"></span> </label>
+                {%endfor%}
             </div>
         </div>
     </div>
-
-    <!-- <div class="container mt-sm-5 my-1 flex-box text-right">
-        <form method="post" action="">
-            <button class="btn btn-primary" type="submit" name="v" value="v"> View</button>
-            
-        </form>
-    </div> -->
     <div class="container mt-sm-5 my-1 flex-box text-right">
         
         <form action="" method="post">

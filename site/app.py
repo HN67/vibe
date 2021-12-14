@@ -5,7 +5,7 @@ import typing as t
 
 import flask
 import requests
-from requests.api import request
+from requests.api import get, request
 
 # def get_data(name: t.Optional[str]) -> t.Mapping[str, int]:
 #     """Obtain data from *somewhere*."""
@@ -32,6 +32,13 @@ def getuserresults(id):
     # parse response
     results = resp.json()
     return results
+
+
+def getqualia(q):
+    resp = requests.get(api_url(q))
+    # parse response
+    moods = resp.json()
+    return moods
 
 
 def currentinfo(s, userinfo):
@@ -88,7 +95,23 @@ def create_app() -> flask.Flask:
             return flask.redirect(
                 flask.url_for("_profile", username=flask.request.form["username"])
             )
-        return flask.render_template("quiz.html")
+        moods = getqualia("moods")
+        colors = getqualia("colors")
+        scents = getqualia("scents")
+        tastes = getqualia("tastes")
+        shapes = getqualia("shapes")
+        media = getqualia("media_genres")
+        music = getqualia("music_genres")
+        return flask.render_template(
+            "quiz.html",
+            moods=moods,
+            colors=colors,
+            scents=scents,
+            tastes=tastes,
+            shapes=shapes,
+            media=media,
+            music=music,
+        )
 
     @app.route("/<username>/edit", methods=["GET", "POST"])
     def _editprofile(username):
@@ -204,6 +227,70 @@ def create_app() -> flask.Flask:
         """Query a client."""
         try:
             return flask.jsonify([someresult, someresult])
+        except KeyError:
+            flask.abort(404)
+
+    moods = [{"name": "Sad"}, {"name": "Happy"}, {"name": "Angry"}]
+    colors = [{"name": "Red"}, {"name": "Blue"}, {"name": "Pink"}]
+    shapes = [{"name": "Triangle"}, {"name": "Circle"}, {"name": "Line"}]
+    tastes = [{"type": "Bitter"}, {"type": "Sweet"}, {"type": "Sour"}]
+    scents = [{"name": "Floral"}, {"name": "Woody"}, {"name": "Fresh"}]
+    media = [{"name": "Fiction"}, {"name": "Action"}, {"name": "Horror"}]
+    music = [{"name": "Pop"}, {"name": "R & B"}, {"name": "Rap"}]
+
+    @app.route("/api/moods/")
+    def _moods() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(moods)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/colors/")
+    def _colors() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(colors)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/shapes/")
+    def _shapes() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(shapes)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/scents/")
+    def _scents() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(scents)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/tastes/")
+    def _tastes() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(tastes)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/media_genres/")
+    def _media() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(media)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/music_genres/")
+    def _music() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(music)
         except KeyError:
             flask.abort(404)
 
