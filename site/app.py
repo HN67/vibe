@@ -5,6 +5,7 @@ import typing as t
 
 import flask
 import requests
+from requests.api import request
 
 # def get_data(name: t.Optional[str]) -> t.Mapping[str, int]:
 #     """Obtain data from *somewhere*."""
@@ -12,6 +13,24 @@ import requests
 #         return {f"{name}_x": random.randint(1, 4), f"{name}_y": random.randint(1, 4)}
 #     else:
 #         return {"x": random.randint(1, 4), "y": random.randint(1, 4)}
+
+
+def getuserinfo(username):
+    p = "usernames/" + username
+    resp = requests.get(api_url(p))
+    # parse response
+    user = resp.json()
+    p = "client/" + str(user["id"])
+    resp = requests.get(api_url(p))
+    userinfo = resp.json()
+    return userinfo
+
+
+def currentinfo(s, userinfo):
+    if flask.request.form[s] != "":
+        return flask.request.form[s]
+    else:
+        return userinfo["bio"]
 
 
 def api_url(name: str) -> str:
@@ -39,14 +58,7 @@ def create_app() -> flask.Flask:
 
     @app.route("/profile/<username>")
     def _profile(username) -> str:
-        p = "usernames/" + username
-        print(p)
-        resp = requests.get(api_url(p))
-        # parse response
-        user = resp.json()
-        p = "client/" + str(user["id"])
-        resp = requests.get(api_url(p))
-        userinfo = resp.json()
+        userinfo = getuserinfo(username)
         return flask.render_template(
             "profile.html", username=username, userinfo=userinfo
         )
@@ -76,7 +88,26 @@ def create_app() -> flask.Flask:
 
     @app.route("/<username>/edit", methods=["GET", "POST"])
     def _editprofile(username):
-        return flask.render_template("editprofile.html")
+        userinfo = getuserinfo(username)
+        if flask.request.method == "POST":
+            bio = currentinfo("bio", userinfo)
+            displayname = currentinfo("name", userinfo)
+
+            email = currentinfo("email", userinfo)
+            birthday = currentinfo("birthday", userinfo)
+            data = {
+                "birthday": birthday,
+                "email": email,
+                "displayName": displayname,
+                "bio": bio,
+            }
+            # requests.post(
+            #     api_url("client/" + str(userinfo["id"])), data=flask.jasonify(data)
+            # )
+            return flask.redirect(flask.url_for("_profile", username=username))
+        return flask.render_template(
+            "editprofile.html", username=username, userinfo=userinfo
+        )
 
     # @app.route("/data", defaults={"name": None})
     # @app.route("/data/<name>")
