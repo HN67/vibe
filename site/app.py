@@ -5,7 +5,7 @@ import typing as t
 
 import flask
 import requests
-from requests.api import request
+from requests.api import get, request
 
 import api
 
@@ -26,6 +26,21 @@ def getuserinfo(username):
     resp = requests.get(api_url(p))
     userinfo = resp.json()
     return userinfo
+
+
+def getuserresults(id):
+    p = "clients/" + id + "/results/all"
+    resp = requests.get(api_url(p))
+    # parse response
+    results = resp.json()
+    return results
+
+
+def getqualia(q):
+    resp = requests.get(api_url(q))
+    # parse response
+    moods = resp.json()
+    return moods
 
 
 def currentinfo(s, userinfo):
@@ -61,8 +76,10 @@ def create_app() -> flask.Flask:
     @app.route("/profile/<username>")
     def _profile(username) -> str:
         userinfo = getuserinfo(username)
+        results = getuserresults(userinfo["id"])
+        print(results)
         return flask.render_template(
-            "profile.html", username=username, userinfo=userinfo
+            "profile.html", username=username, userinfo=userinfo, results=results
         )
 
     @app.route("/login", methods=["GET", "POST"])
@@ -77,16 +94,26 @@ def create_app() -> flask.Flask:
     @app.route("/quiz", methods=["GET", "POST"])
     def _quiz() -> str:
         if flask.request.method == "POST":
-            if flask.request.form.get("v"):
-                return flask.redirect(flask.url_for("_result"))
-            elif flask.request.form.get("vands"):
-                return flask.redirect(flask.url_for("_result"))
-        elif flask.request.method == "GET":
-            return flask.render_template("quiz.html")
-
-    @app.route("/result")
-    def _result() -> str:
-        return flask.render_template("result.html")
+            return flask.redirect(
+                flask.url_for("_profile", username=flask.request.form["username"])
+            )
+        moods = getqualia("moods")
+        colors = getqualia("colors")
+        scents = getqualia("scents")
+        tastes = getqualia("tastes")
+        shapes = getqualia("shapes")
+        media = getqualia("media_genres")
+        music = getqualia("music_genres")
+        return flask.render_template(
+            "quiz.html",
+            moods=moods,
+            colors=colors,
+            scents=scents,
+            tastes=tastes,
+            shapes=shapes,
+            media=media,
+            music=music,
+        )
 
     @app.route("/<username>/edit", methods=["GET", "POST"])
     def _editprofile(username):
@@ -186,5 +213,89 @@ def create_app() -> flask.Flask:
             flask.abort(404)
 
     app = api.build_api(app)
+
+    someresult = {
+        "client": 1,
+        "number": 1,
+        "mood": "Sad",
+        "taste": "Sour",
+        "scent": "Bitter",
+        "color": "Gray",
+        "shape": "Line",
+        "media_genre": "Sad",
+        "music_genre": "Sad pop",
+    }
+
+    @app.route("/api/clients/<id>/results/all")
+    def _results(id: str) -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify([someresult, someresult])
+        except KeyError:
+            flask.abort(404)
+
+    moods = [{"name": "Sad"}, {"name": "Happy"}, {"name": "Angry"}]
+    colors = [{"name": "Red"}, {"name": "Blue"}, {"name": "Pink"}]
+    shapes = [{"name": "Triangle"}, {"name": "Circle"}, {"name": "Line"}]
+    tastes = [{"type": "Bitter"}, {"type": "Sweet"}, {"type": "Sour"}]
+    scents = [{"name": "Floral"}, {"name": "Woody"}, {"name": "Fresh"}]
+    media = [{"name": "Fiction"}, {"name": "Action"}, {"name": "Horror"}]
+    music = [{"name": "Pop"}, {"name": "R & B"}, {"name": "Rap"}]
+
+    @app.route("/api/moods/")
+    def _moods() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(moods)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/colors/")
+    def _colors() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(colors)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/shapes/")
+    def _shapes() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(shapes)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/scents/")
+    def _scents() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(scents)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/tastes/")
+    def _tastes() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(tastes)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/media_genres/")
+    def _media() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(media)
+        except KeyError:
+            flask.abort(404)
+
+    @app.route("/api/music_genres/")
+    def _music() -> flask.Response:
+        """Query a client."""
+        try:
+            return flask.jsonify(music)
+        except KeyError:
+            flask.abort(404)
 
     return app
