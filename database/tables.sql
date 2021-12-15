@@ -26,7 +26,7 @@ CREATE TABLE Color (
     name NVARCHAR(255) NOT NULL,
     hue INT NOT NULL,
     saturation INT NOT NULL,
-    value INT NOT NULL,
+    brightness INT NOT NULL,
     PRIMARY KEY (name)
 );
 

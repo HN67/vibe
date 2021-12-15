@@ -1,0 +1,36 @@
+Mood default
+name NVARCHAR(255)
+
+Taste qualia
+type NVARCHAR(255)
+
+Scent qualia
+name NVARCHAR(255)
+family NVARCHAR(255)
+
+Color qualia
+name NVARCHAR(255)
+hue INT
+saturation INT
+brightness INT
+
+Shape qualia
+name NVARCHAR(255)
+sides INT
+
+MediaGenre qualia
+name NVARCHAR(255)
+
+MusicGenre qualia
+name NVARCHAR(255)
+
+admin default
+id INT
+permissions INT
+
+client default
+id INT
+birthday DATE
+email NVARCHAR(255)
+displayName NVARCHAR(255)
+bio NVARCHAR(255)
