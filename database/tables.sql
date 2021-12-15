@@ -75,7 +75,7 @@ CREATE TABLE Result (
     color NVARCHAR(255),
     media NVARCHAR(255),
     music NVARCHAR(255),
-    PRIMARY KEY (clientId, number),
+    PRIMARY KEY (number),
     FOREIGN KEY (clientId)
         REFERENCES Client(id)
         ON UPDATE CASCADE ON DELETE CASCADE,
@@ -99,7 +99,7 @@ CREATE TABLE Result (
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (music)
         REFERENCES MusicGenre(name)
-        ON UPDATE CASCADE ON DELETE RESTRICT,
+        ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE TasteAffects (
@@ -107,10 +107,10 @@ CREATE TABLE TasteAffects (
     mood NVARCHAR(255) NOT NULL,
     PRIMARY KEY (taste, mood),
     FOREIGN KEY (taste)
-        REFERENCES Taste(type),
+        REFERENCES Taste(type)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (mood)
-        REFERENCES Mood(name),
+        REFERENCES Mood(name)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
@@ -119,10 +119,10 @@ CREATE TABLE ScentAffects (
     mood NVARCHAR(255) NOT NULL,
     PRIMARY KEY (scent, mood),
     FOREIGN KEY (scent)
-        REFERENCES Scent(name),
+        REFERENCES Scent(name)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (mood)
-        REFERENCES Mood(name),
+        REFERENCES Mood(name)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
@@ -131,10 +131,10 @@ CREATE TABLE ShapeAffects (
     mood NVARCHAR(255) NOT NULL,
     PRIMARY KEY (shape, mood),
     FOREIGN KEY (shape)
-        REFERENCES Shape(name),
+        REFERENCES Shape(name)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (mood)
-        REFERENCES Mood(name),
+        REFERENCES Mood(name)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
@@ -143,10 +143,10 @@ CREATE TABLE ColorAffects (
     mood NVARCHAR(255) NOT NULL,
     PRIMARY KEY (color, mood),
     FOREIGN KEY (color)
-        REFERENCES Color(name),
+        REFERENCES Color(name)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (mood)
-        REFERENCES Mood(name),
+        REFERENCES Mood(name)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
@@ -155,10 +155,10 @@ CREATE TABLE MediaAffects (
     mood NVARCHAR(255) NOT NULL,
     PRIMARY KEY (media, mood),
     FOREIGN KEY (media)
-        REFERENCES MediaGenre(name),
+        REFERENCES MediaGenre(name)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (mood)
-        REFERENCES Mood(name),
+        REFERENCES Mood(name)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
@@ -167,9 +167,9 @@ CREATE TABLE MusicAffects (
     mood NVARCHAR(255) NOT NULL,
     PRIMARY KEY (music, mood),
     FOREIGN KEY (music)
-        REFERENCES MusicGenre(name),
+        REFERENCES MusicGenre(name)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (mood)
-        REFERENCES Mood(name),
+        REFERENCES Mood(name)
         ON UPDATE CASCADE ON DELETE RESTRICT
 );

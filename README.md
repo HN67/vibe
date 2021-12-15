@@ -46,9 +46,12 @@ See <https://mariadb.com/kb/en/mariadb-basics/>
 
 The database was created with `CREATE DATABASE vibe;`
 
-A user was created with `CREATE USER site@localhost IDENTIFIED BY 'password'`,
-and granted permissions with `GRANT ALL privileges ON vibe.* TO 'site'@localhost;`
+A user was created with `CREATE USER site@'192.168.1.%' IDENTIFIED BY 'password'`,
+and granted permissions with `GRANT ALL privileges ON vibe.* TO 'site'@'192.168.1.%';`
 which gave the user full access to `vibe`.
+This user can log in from anywhere on my local area network.
+Note that not all local area networks may have all devices on `.1`,
+at worst a /16 address space can be given instead, i.e. `'192.168.%'`.
 
 ### Database Operation
 
@@ -66,3 +69,9 @@ can connect from the same machine,
 using user `site`, host `localhost`, database `vibe`, and port `7777`
 (not clear on the significance of the port, just choose it randomly),
 and appropriate password for the user `site`.
+
+### Database Configuration
+
+In order to allow connections from LAN,
+edited the configuration file `/etc/mysql/mariadb.conf.d/50-server.cnf`
+and changed `bind-address=127.0.0.1` to `0.0.0.0`.
