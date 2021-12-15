@@ -148,7 +148,7 @@ def print_procedures(output: t.TextIO, resource: Resource) -> None:
         + ", ".join(
             f"{resource.name}.{attr.name} = {attr.name}" for attr in resource.attrs
         )
-        + "\n"
+        + "\n        "
     )
 
     text = f"""

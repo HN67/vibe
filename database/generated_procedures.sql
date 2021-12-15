@@ -24,7 +24,7 @@ CREATE OR REPLACE PROCEDURE put_mood(IN name NVARCHAR(255))
         VALUES (name)
             ON DUPLICATE KEY UPDATE
             Mood.name = name
-;
+        ;
     END;
 //
 
@@ -63,7 +63,7 @@ CREATE OR REPLACE PROCEDURE put_taste(IN type NVARCHAR(255))
         VALUES (type)
             ON DUPLICATE KEY UPDATE
             Taste.type = type
-;
+        ;
     END;
 //
 
@@ -102,7 +102,7 @@ CREATE OR REPLACE PROCEDURE put_scent(IN name NVARCHAR(255), IN family NVARCHAR(
         VALUES (name, family)
             ON DUPLICATE KEY UPDATE
             Scent.name = name, Scent.family = family
-;
+        ;
     END;
 //
 
@@ -141,7 +141,7 @@ CREATE OR REPLACE PROCEDURE put_color(IN name NVARCHAR(255), IN hue INT, IN satu
         VALUES (name, hue, saturation, brightness)
             ON DUPLICATE KEY UPDATE
             Color.name = name, Color.hue = hue, Color.saturation = saturation, Color.brightness = brightness
-;
+        ;
     END;
 //
 
@@ -180,7 +180,7 @@ CREATE OR REPLACE PROCEDURE put_shape(IN name NVARCHAR(255), IN sides INT)
         VALUES (name, sides)
             ON DUPLICATE KEY UPDATE
             Shape.name = name, Shape.sides = sides
-;
+        ;
     END;
 //
 
@@ -219,7 +219,7 @@ CREATE OR REPLACE PROCEDURE put_mediagenre(IN name NVARCHAR(255))
         VALUES (name)
             ON DUPLICATE KEY UPDATE
             MediaGenre.name = name
-;
+        ;
     END;
 //
 
@@ -258,7 +258,7 @@ CREATE OR REPLACE PROCEDURE put_musicgenre(IN name NVARCHAR(255))
         VALUES (name)
             ON DUPLICATE KEY UPDATE
             MusicGenre.name = name
-;
+        ;
     END;
 //
 
@@ -297,7 +297,7 @@ CREATE OR REPLACE PROCEDURE put_admin(IN id INT, IN permissions INT)
         VALUES (id, permissions)
             ON DUPLICATE KEY UPDATE
             admin.id = id, admin.permissions = permissions
-;
+        ;
     END;
 //
 
@@ -336,7 +336,7 @@ CREATE OR REPLACE PROCEDURE put_client(IN id INT, IN birthday DATE, IN email NVA
         VALUES (id, birthday, email, displayName, bio)
             ON DUPLICATE KEY UPDATE
             client.id = id, client.birthday = birthday, client.email = email, client.displayName = displayName, client.bio = bio
-;
+        ;
     END;
 //
 
