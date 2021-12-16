@@ -322,6 +322,71 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
     return app
 
 
+@dataclasses.dataclass()
+class Resource:
+    """Denote name and structure of a resource."""
+
+    name: str
+    attrs: t.Sequence[str]
+
+    @property
+    def others(self) -> t.Sequence[str]:
+        """Everything except first attr."""
+        return self.attrs[1:]
+
+    @property
+    def key(self) -> str:
+        """First attr."""
+        return self.attrs[0]
+
+
+def build_resource_api(app: flask.Flask, resource: Resource) -> flask.Flask:
+    """Automatically build and register endpoints for a resource.
+
+    Assumes the existence of certain stored procedures.
+    """
+
+    path = f"/api/{resource.name}s"
+    specific_path = f"{path}/<key>"
+
+    @app.get(f"{path}/")
+    def _get_keys() -> flask.Response:
+        """Query list of resources."""
+        with get_db() as db:
+            # return flask.jsonify([mood for (mood,) in db.procedure("get_moods").rows])
+            return flask.jsonify(db.procedure(f"get_{resource.name}s").vertical())
+
+    @app.get(specific_path)
+    def _get(key: str) -> flask.Response:
+        """Query a resource."""
+        with get_db() as db:
+            result = db.procedure(f"get_{resource.name}", (key,))
+            try:
+                return flask.jsonify(result.one())
+            except IndexError:
+                flask.abort(404)
+
+    @app.put(specific_path)
+    def _put(key: str) -> flask.Response:
+        """Put a resource."""
+        body = flask.request.json
+        if body is None:
+            flask.abort(400)
+        parameters = tuple([key] + [body[attr] for attr in resource.others])
+        with get_db() as db:
+            db.procedure(f"put_{resource.name}", parameters)
+        return flask.jsonify({resource.key: key})
+
+    @app.delete(specific_path)
+    def _delete(key: str) -> flask.Response:
+        """Delete a resource."""
+        with get_db() as db:
+            db.procedure(f"delete_{resource.name}", (key,))
+        return flask.jsonify({resource.key: key})
+
+    return app
+
+
 def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     """Register various API endpoints on the provided Flask app.
 
@@ -332,55 +397,22 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
         return build_api_mock(app)
 
     # TODO
-    # Make function to generate qualia endpoints (and other generated apis?)
-    # use fancier methods on Result
     # Make result endpoints also modify Affects tables
     # Make connections endpoints and custom endpoints
 
-    @app.get("/api/moods/")
-    def _get_moods() -> flask.Response:
-        """Query list of moods."""
-        logger.debug("/moods/ endpoint called")
-        with get_db() as db:
-            # return flask.jsonify([mood for (mood,) in db.procedure("get_moods").rows])
-            return flask.jsonify(db.procedure("get_moods").vertical())
+    resources = [
+        Resource("mood", ["name"]),
+        Resource("taste", ["type"]),
+        Resource("scent", ["name", "family"]),
+        Resource("shape", ["name", "sides"]),
+        Resource("color", ["name", "hue", "saturation", "brightness"]),
+        Resource("musicgenre", ["name"]),
+        Resource("mediagenre", ["name"]),
+        Resource("admin", ["id", "permissions"]),
+        Resource("client", ["id", "birthday", "email", "displayName", "bio"]),
+    ]
 
-    @app.get("/api/moods/<name>")
-    def _get_mood(name: str) -> flask.Response:
-        """Query a mood."""
-        with get_db() as db:
-            result = db.procedure("get_mood", (name,))
-            try:
-                return flask.jsonify(result.one())
-                # out_name = result.rows[0][0]
-            except IndexError:
-                flask.abort(404)
-            # return flask.jsonify({"name": out_name})
-
-    @app.put("/api/moods/<name>")
-    def _put_mood(name: str) -> flask.Response:
-        """Put a mood."""
-        # TODO comment this better
-        with get_db() as db:
-            try:
-                old = db.procedure("get_mood", (name,)).one()
-            except IndexError:
-                old = None
-            db.procedure("put_mood", (name,))
-            if old is None:
-                try:
-                    return flask.jsonify(db.procedure("get_mood", (name,)).one())
-                except IndexError:
-                    flask.abort(500)
-            else:
-                return flask.jsonify(old)
-
-    @app.delete("/api/moods/<name>")
-    def _delete_mood(name: str) -> flask.Response:
-        """Delete a mood."""
-        with get_db() as db:
-            db.procedure("delete_mood", (name,))
-            # TODO decide what delete returns
-            return flask.jsonify({"name": name})
+    for resource in resources:
+        build_resource_api(app, resource)
 
     return app
