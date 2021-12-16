@@ -78,7 +78,7 @@ class Database:
         try:
             while cursor.nextset():
                 pass
-        except mariadb.ProgrammingError:
+        except mariadb.ProgrammingError as e:
             logger.debug(e)
 
         return Result(headers=headers, rows=data, auto=auto)
