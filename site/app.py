@@ -65,6 +65,12 @@ def getconnections(q, m):
     return moods
 
 
+def makeconnection(q, m, s):
+    requests.post(api.api_url(q + "_connections"), params={q: s, "mood": m})
+    # parse response
+    return
+
+
 def create_app() -> flask.Flask:
     """Create the Flask instance."""
 
@@ -141,7 +147,13 @@ def create_app() -> flask.Flask:
                 if selected == "":
                     qualia_connections = getconnections((q + "s"), selected_mood)
                     selected = qualia_connections[0][q]
-                # then add it to their result
+                # if they did then we make a connection with that
+                else:
+                    makeconnection((q + "s"), selected_mood, selected)
+                    print(
+                        "made connection: ", q + ": " + selected, "  " + selected_mood
+                    )
+                # then add whatever it was to their result
                 client_result[q] = selected
 
             # now we put the result in the database for the client using the API
