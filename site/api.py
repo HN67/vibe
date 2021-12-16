@@ -1,10 +1,21 @@
 """API Endpoints."""
 
+import dataclasses
 import typing as t
 
 import flask
 import mariadb
 import toml
+
+
+@dataclasses.dataclass()
+class Result:
+    """Database result."""
+
+    headers: tuple[str, ...]
+    rows: t.Sequence[tuple[t.Any, ...]]
+
+    auto: t.Optional[int] = None
 
 
 class Database:
@@ -15,12 +26,41 @@ class Database:
         self.connection = mariadb.connect(**params)
         self.cursor = self.connection.cursor()
 
-    def execute(
-        self, query: str, arguments: t.Optional[t.Tuple[t.Any, ...]] = None
-    ) -> t.Iterable[t.Tuple[t.Any, ...]]:
-        """Execute a query on the database."""
-        self.cursor.execute(query, arguments)
-        yield from self.cursor
+    def procedure(
+        self, name: str, arguments: t.Optional[tuple[t.Any, ...]] = None
+    ) -> Result:
+        """Call a stored procedure.
+
+        Returns a single result set, exhausting the others if they exist.
+        """
+        # we want a single cursor
+        # at some point self.cursor might become a getter
+        cursor = self.cursor
+
+        cursor.callproc(name, arguments)
+
+        try:
+            data: t.Sequence[tuple[t.Any, ...]] = cursor.fetchall()
+        except mariadb.ProgrammingError:
+            data = []
+
+        try:
+            headers: tuple[str, ...] = tuple(column[0] for column in cursor.description)
+        except mariadb.ProgrammingError:
+            headers = tuple()
+
+        auto: t.Optional[int] = cursor.lastrowid
+
+        # documentation sucks real bad about mariadb
+        # but it seems like this will return None if the results have been exhausted
+        # nextset throws exception if non querying statement, e.g. INSERT
+        try:
+            while cursor.nextset():
+                pass
+        except mariadb.ProgrammingError:
+            pass
+
+        return Result(headers=headers, rows=data, auto=auto)
 
 
 CONFIG = "config.toml"
@@ -45,8 +85,6 @@ def build_api(app: flask.Flask) -> flask.Flask:
     @app.get("/api/moods/")
     def _moods() -> flask.Response:
         """Query list of moods."""
-        return flask.jsonify(
-            [mood for (mood,) in get_db().execute("CALL get_moods();")]
-        )
+        return flask.jsonify([mood for (mood,) in get_db().procedure("get_moods").rows])
 
     return app
