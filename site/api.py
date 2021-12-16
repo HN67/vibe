@@ -4,16 +4,12 @@ import dataclasses
 import logging
 import typing as t
 
-from requests.api import request
-
 import flask
 import mariadb
 import toml
 
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
-
-# put endpoint still isn't having any effect
 
 
 @dataclasses.dataclass()
@@ -24,6 +20,32 @@ class Result:
     rows: t.Sequence[t.Tuple[t.Any, ...]]
 
     auto: t.Optional[int] = None
+
+    def vertical(self, column: int = 0) -> t.Sequence[t.Any]:
+        """Return a vertical column extracted from this Result rows."""
+        return [row[column] for row in self.rows]
+
+    @staticmethod
+    def weave(
+        headers: t.Tuple[str, ...], row: t.Tuple[t.Any, ...]
+    ) -> t.Mapping[str, t.Any]:
+        """Weave a headers tuple with a row to produce a mapping.
+
+        Although headers and row should be the same size,
+        if they are not the longer is truncated.
+        """
+        return dict(zip(headers, row))
+
+    def one(self, index: int = 0) -> t.Optional[t.Mapping[str, t.Any]]:
+        """Return a single result, woven."""
+        try:
+            return self.weave(self.headers, self.rows[index])
+        except IndexError:
+            return None
+
+    def all(self) -> t.Sequence[t.Mapping[str, t.Any]]:
+        """Return the results woven."""
+        return [self.weave(self.headers, row) for row in self.rows]
 
 
 class Database:
@@ -308,6 +330,12 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
 
     if mock:
         return build_api_mock(app)
+
+    # TODO
+    # Make function to generate qualia endpoints (and other generated apis?)
+    # use fancier methods on Result
+    # Make result endpoints also modify Affects tables
+    # Make connections endpoints and custom endpoints
 
     @app.get("/api/moods/")
     def _get_moods() -> flask.Response:
