@@ -233,7 +233,7 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
         """Query list of moods."""
         return flask.jsonify([mood for (mood,) in get_db().procedure("get_moods").rows])
 
-    @app.get("/api/mood/<name>")
+    @app.get("/api/moods/<name>")
     def _get_mood(name: str) -> flask.Response:
         """Query a mood."""
         result = get_db().procedure("get_mood", (name,))
@@ -243,13 +243,13 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
             flask.abort(404)
         return flask.jsonify({"name": out_name})
 
-    @app.put("/api/mood/<name>")
+    @app.put("/api/moods/<name>")
     def _put_mood(name: str) -> flask.Response:
         """Put a mood."""
         get_db().procedure("put_mood", (name,))
         return flask.jsonify({"name": name})
 
-    @app.delete("/api/mood/<name>")
+    @app.delete("/api/moods/<name>")
     def _delete_mood(name: str) -> flask.Response:
         """Delete a mood."""
         get_db().procedure("delete_mood", (name,))
