@@ -93,7 +93,6 @@ def create_app() -> flask.Flask:
     def _quiz() -> str:
         if flask.request.method == "POST":
             ## --- based on user input and connections from database creates the client's result and put it in the database
-            print("hemlo")
             # make a result to fill in
             client_result = {
                 "mood": "",
@@ -104,10 +103,8 @@ def create_app() -> flask.Flask:
                 "media_genre": "",
                 "music_genre": "",
             }
-            print("hemlo1")
             username = flask.request.form["username"]
             print(username)
-            print("hemlo2")
             # get their mood
             try:
                 selected_mood = flask.request.form["mood"]
