@@ -132,6 +132,6 @@ def create_app() -> flask.Flask:
             ]
         )
 
-    app = api.build_api(app, mock=True)
+    app = api.build_api(app, mock=False)
 
     return app
