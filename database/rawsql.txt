@@ -1,34 +1,34 @@
 Mood default
 name NVARCHAR(255)
 
-Taste qualia
+Taste qualia,Taste
 type NVARCHAR(255)
 
-Scent qualia
+Scent qualia,Scent
 name NVARCHAR(255)
 family NVARCHAR(255)
 
-Color qualia
+Color qualia,Color
 name NVARCHAR(255)
 hue INT
 saturation INT
 brightness INT
 
-Shape qualia
+Shape qualia,Shape
 name NVARCHAR(255)
 sides INT
 
-MediaGenre qualia
+MediaGenre qualia,Media
 name NVARCHAR(255)
 
-MusicGenre qualia
+MusicGenre qualia,Music
 name NVARCHAR(255)
 
-admin default
+Admin default
 id INT
 permissions INT
 
-client default
+Client default
 id INT
 birthday DATE
 email NVARCHAR(255)

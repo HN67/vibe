@@ -189,6 +189,73 @@ CREATE OR REPLACE PROCEDURE delete_{resource.name.lower()}(IN {resource.key.name
     END;
 //    
 """
+    if resource.mark.startswith("qualia"):
+        name = resource.mark.split(",", maxsplit=1)[1]
+        table = f"{name}Affects"
+        this = Var(name=name.lower(), type="NVARCHAR(255)")
+        other = Var(name="mood", type="NVARCHAR(255)")
+
+        parameters = ", ".join(f"IN {attr.name} {attr.type}" for attr in [this, other])
+        selections = ", ".join(f"{attr.name}" for attr in [this, other])
+        update_portion = ", ".join(
+            f"{table}.{attr.name} = {attr.name}" for attr in [this, other]
+        )
+        delete_portion = " AND ".join(
+            f"{table}.{attr.name} = {attr.name}" for attr in [this, other]
+        )
+
+        extra = f"""
+CREATE OR REPLACE PROCEDURE put_{this.name}affects({parameters})
+    MODIFIES SQL DATA
+    BEGIN
+        INSERT INTO {table} ({selections})
+        VALUES ({selections})
+        ON DUPLICATE KEY UPDATE
+            {update_portion}
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE delete_{this.name}affects({parameters})
+    MODIFIES SQL DATA
+    BEGIN
+        DELETE FROM {table}
+        WHERE {delete_portion}
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_{this.name}affects_{other.name}(IN {other.name} {other.type})
+    READS SQL DATA
+    BEGIN
+        SELECT {selections}
+        FROM {table}
+        WHERE {table}.{other.name} = {other.name}
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_{this.name}affects_{this.name}(IN {this.name} {this.type})
+    READS SQL DATA
+    BEGIN
+        SELECT {selections}
+        FROM {table}
+        WHERE {table}.{this.name} = {this.name}
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_{this.name}affects()
+    READS SQL DATA
+    BEGIN
+        SELECT {selections}
+        FROM {table}
+        ;
+    END;
+//
+"""
+        # dont strip leading newline
+        text += extra
     print(text[1:], file=output)
 
 
