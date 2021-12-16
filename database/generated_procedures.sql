@@ -1,7 +1,7 @@
 CREATE OR REPLACE PROCEDURE get_moods()
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM Mood
         ;
     END;
@@ -10,7 +10,7 @@ CREATE OR REPLACE PROCEDURE get_moods()
 CREATE OR REPLACE PROCEDURE get_mood(IN name NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM Mood
         WHERE Mood.name = name
         ;
@@ -40,7 +40,7 @@ CREATE OR REPLACE PROCEDURE delete_mood(IN name NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_tastes()
     READS SQL DATA
     BEGIN
-        SELECT (type)
+        SELECT type
         FROM Taste
         ;
     END;
@@ -49,7 +49,7 @@ CREATE OR REPLACE PROCEDURE get_tastes()
 CREATE OR REPLACE PROCEDURE get_taste(IN type NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (type)
+        SELECT type
         FROM Taste
         WHERE Taste.type = type
         ;
@@ -79,7 +79,7 @@ CREATE OR REPLACE PROCEDURE delete_taste(IN type NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_scents()
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM Scent
         ;
     END;
@@ -88,7 +88,7 @@ CREATE OR REPLACE PROCEDURE get_scents()
 CREATE OR REPLACE PROCEDURE get_scent(IN name NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (name, family)
+        SELECT name, family
         FROM Scent
         WHERE Scent.name = name
         ;
@@ -118,7 +118,7 @@ CREATE OR REPLACE PROCEDURE delete_scent(IN name NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_colors()
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM Color
         ;
     END;
@@ -127,7 +127,7 @@ CREATE OR REPLACE PROCEDURE get_colors()
 CREATE OR REPLACE PROCEDURE get_color(IN name NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (name, hue, saturation, brightness)
+        SELECT name, hue, saturation, brightness
         FROM Color
         WHERE Color.name = name
         ;
@@ -157,7 +157,7 @@ CREATE OR REPLACE PROCEDURE delete_color(IN name NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_shapes()
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM Shape
         ;
     END;
@@ -166,7 +166,7 @@ CREATE OR REPLACE PROCEDURE get_shapes()
 CREATE OR REPLACE PROCEDURE get_shape(IN name NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (name, sides)
+        SELECT name, sides
         FROM Shape
         WHERE Shape.name = name
         ;
@@ -196,7 +196,7 @@ CREATE OR REPLACE PROCEDURE delete_shape(IN name NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_mediagenres()
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM MediaGenre
         ;
     END;
@@ -205,7 +205,7 @@ CREATE OR REPLACE PROCEDURE get_mediagenres()
 CREATE OR REPLACE PROCEDURE get_mediagenre(IN name NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM MediaGenre
         WHERE MediaGenre.name = name
         ;
@@ -235,7 +235,7 @@ CREATE OR REPLACE PROCEDURE delete_mediagenre(IN name NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_musicgenres()
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM MusicGenre
         ;
     END;
@@ -244,7 +244,7 @@ CREATE OR REPLACE PROCEDURE get_musicgenres()
 CREATE OR REPLACE PROCEDURE get_musicgenre(IN name NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (name)
+        SELECT name
         FROM MusicGenre
         WHERE MusicGenre.name = name
         ;
@@ -274,7 +274,7 @@ CREATE OR REPLACE PROCEDURE delete_musicgenre(IN name NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_admins()
     READS SQL DATA
     BEGIN
-        SELECT (id)
+        SELECT id
         FROM admin
         ;
     END;
@@ -283,7 +283,7 @@ CREATE OR REPLACE PROCEDURE get_admins()
 CREATE OR REPLACE PROCEDURE get_admin(IN id INT)
     READS SQL DATA
     BEGIN
-        SELECT (id, permissions)
+        SELECT id, permissions
         FROM admin
         WHERE admin.id = id
         ;
@@ -313,7 +313,7 @@ CREATE OR REPLACE PROCEDURE delete_admin(IN id INT)
 CREATE OR REPLACE PROCEDURE get_clients()
     READS SQL DATA
     BEGIN
-        SELECT (id)
+        SELECT id
         FROM client
         ;
     END;
@@ -322,7 +322,7 @@ CREATE OR REPLACE PROCEDURE get_clients()
 CREATE OR REPLACE PROCEDURE get_client(IN id INT)
     READS SQL DATA
     BEGIN
-        SELECT (id, birthday, email, displayName, bio)
+        SELECT id, birthday, email, displayName, bio
         FROM client
         WHERE client.id = id
         ;

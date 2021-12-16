@@ -155,7 +155,7 @@ def print_procedures(output: t.TextIO, resource: Resource) -> None:
 CREATE OR REPLACE PROCEDURE get_{resource.name.lower()}s()
     READS SQL DATA
     BEGIN
-        SELECT ({resource.key.name})
+        SELECT {resource.key.name}
         FROM {resource.name}
         ;
     END;
@@ -164,7 +164,7 @@ CREATE OR REPLACE PROCEDURE get_{resource.name.lower()}s()
 CREATE OR REPLACE PROCEDURE get_{resource.name.lower()}(IN {resource.key.name} {resource.key.type})
     READS SQL DATA
     BEGIN
-        SELECT ({selection_list})
+        SELECT {selection_list}
         FROM {resource.name}
         WHERE {resource.name}.{resource.key.name} = {resource.key.name}
         ;

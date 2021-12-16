@@ -1,7 +1,7 @@
 CREATE OR REPLACE PROCEDURE get_users()
     READS SQL DATA
     BEGIN
-        SELECT (id)
+        SELECT id
         FROM User
         ;
     END;
@@ -19,7 +19,7 @@ CREATE OR REPLACE PROCEDURE post_user(IN username NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_user(IN id INT)
     READS SQL DATA
     BEGIN
-        SELECT (id, username)
+        SELECT id, username
         FROM User
         WHERE User.id = id
         ;
@@ -38,7 +38,7 @@ CREATE OR REPLACE PROCEDURE delete_user(IN id INT)
 CREATE OR REPLACE PROCEDURE get_usernames()
     READS SQL DATA
     BEGIN
-        SELECT (username)
+        SELECT username
         FROM User
         ;
     END;
@@ -47,7 +47,7 @@ CREATE OR REPLACE PROCEDURE get_usernames()
 CREATE OR REPLACE PROCEDURE get_username(IN username NVARCHAR(255))
     READS SQL DATA
     BEGIN
-        SELECT (id, username)
+        SELECT id, username
         FROM User
         WHERE User.username = username
         ;
@@ -57,7 +57,7 @@ CREATE OR REPLACE PROCEDURE get_username(IN username NVARCHAR(255))
 CREATE OR REPLACE PROCEDURE get_results(IN clientId INT)
     READS SQL DATA
     BEGIN
-        SELECT (number)
+        SELECT number
         FROM Result
         WHERE Result.clientId = clientId
         ;
@@ -79,7 +79,7 @@ CREATE OR REPLACE PROCEDURE post_result(
 CREATE OR REPLACE PROCEDURE get_result(IN clientId INT, IN number INT)
     READS SQL DATA
     BEGIN
-        SELECT (clientId, number, mood, taste, scent, color, shape, media, music)
+        SELECT clientId, number, mood, taste, scent, color, shape, media, music
         FROM Result
         WHERE Result.clientId = clientId AND Result.number = number
         ;
@@ -89,7 +89,7 @@ CREATE OR REPLACE PROCEDURE get_result(IN clientId INT, IN number INT)
 CREATE OR REPLACE PROCEDURE get_result_all(IN clientId INT)
     READS SQL DATA
     BEGIN
-        SELECT (clientId, number, mood, taste, scent, color, shape, media, music)
+        SELECT clientId, number, mood, taste, scent, color, shape, media, music
         FROM Result
         WHERE Result.clientId = clientId
         ;
