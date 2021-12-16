@@ -4,7 +4,7 @@
 
 <div>
     <!-- refrences https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-vi-profile-page-and-avatars -->
-    <h1>Name: {{ username }}</h1>
+    <h1>Name: {{ userinfo['displayName'] }}</h1>
     <p>Bio: {{userinfo["bio"]}} </p>
     <a href="{{ url_for('_editprofile',username=username) }}">Edit your profile</a>
     <hr>
