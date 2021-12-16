@@ -340,23 +340,25 @@ class Resource:
         return self.attrs[0]
 
 
-def build_resource_api(app: flask.Flask, resource: Resource) -> flask.Flask:
-    """Automatically build and register endpoints for a resource.
+def build_resource_api(resource: Resource) -> flask.Blueprint:
+    """Automatically build and register endpoints for a resource on a bluepint.
 
     Assumes the existence of certain stored procedures.
     """
 
     path = f"/api/{resource.name}s"
-    specific_path = f"{path}/<key>"
+    specific_path = "/<key>"
 
-    @app.get(f"{path}/")
+    bp = flask.Blueprint(f"{resource.name}s", __name__, url_prefix=path)
+
+    @bp.get("/")
     def _get_keys() -> flask.Response:
         """Query list of resources."""
         with get_db() as db:
             # return flask.jsonify([mood for (mood,) in db.procedure("get_moods").rows])
             return flask.jsonify(db.procedure(f"get_{resource.name}s").vertical())
 
-    @app.get(specific_path)
+    @bp.get(specific_path)
     def _get(key: str) -> flask.Response:
         """Query a resource."""
         with get_db() as db:
@@ -366,7 +368,7 @@ def build_resource_api(app: flask.Flask, resource: Resource) -> flask.Flask:
             except IndexError:
                 flask.abort(404)
 
-    @app.put(specific_path)
+    @bp.put(specific_path)
     def _put(key: str) -> flask.Response:
         """Put a resource."""
         body = flask.request.json
@@ -377,14 +379,14 @@ def build_resource_api(app: flask.Flask, resource: Resource) -> flask.Flask:
             db.procedure(f"put_{resource.name}", parameters)
         return flask.jsonify({resource.key: key})
 
-    @app.delete(specific_path)
+    @bp.delete(specific_path)
     def _delete(key: str) -> flask.Response:
         """Delete a resource."""
         with get_db() as db:
             db.procedure(f"delete_{resource.name}", (key,))
         return flask.jsonify({resource.key: key})
 
-    return app
+    return bp
 
 
 def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
@@ -413,6 +415,6 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     ]
 
     for resource in resources:
-        build_resource_api(app, resource)
+        app.register_blueprint(build_resource_api(resource))
 
     return app
