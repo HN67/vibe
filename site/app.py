@@ -93,16 +93,71 @@ def create_app() -> flask.Flask:
     @app.route("/quiz", methods=["GET", "POST"])
     def _quiz() -> str:
         if flask.request.method == "POST":
-            return flask.redirect(
-                flask.url_for("_profile", username=flask.request.form["username"])
+            ## --- based on user input and connections from database creates the client's result and put it in the database
+            print("hemlo")
+            # make a result to fill in
+            client_result = {
+                "mood": "",
+                "taste": "",
+                "scent": "",
+                "color": "",
+                "shape": "",
+                "media_genre": "",
+                "music_genre": "",
+            }
+            print("hemlo1")
+            username = flask.request.form["username"]
+            print(username)
+            print("hemlo2")
+            # get their mood
+            try:
+                selected_mood = flask.request.form["mood"]
+            # if they didn't cooperate just send them back to their profile like a loser
+            except:
+                return flask.redirect(
+                    flask.url_for("_profile", username=flask.request.form["username"])
+                )
+            # if they did cooperate then update their result
+            client_result["mood"] = selected_mood
+
+            print("mood: " + client_result["mood"])
+
+            # use result to fill in anything missing
+            for q in ["color", "scent", "taste", "shape", "media_genre", "music_genre"]:
+                # get value from the radio buttons
+                selected = flask.request.form[q]
+                # if they didn't pick anything then we give them a suggestions
+                print(q + "  " + selected)
+                if selected == "":
+                    selected = "just vibe bro"
+                #     qualia_connections_raw = requests.get(
+                #         api_url(q + "_connections"), params={"mood": selected_mood}
+                #     )
+                #     qualia_connections = qualia_connections_raw.json()
+                #     print(qualia_connections[0][q])
+                #     selected = qualia_connections[0][q]
+                # then add it to their result
+                client_result[q] = selected
+                print(q + "  " + selected)
+
+            # now we put the result in the database for the client using the API
+            username = flask.request.form["username"]
+            userinfo = getuserinfo(username)
+            requests.post(
+                api_url("client/" + str(userinfo["id"] + "/results/")),
+                params=client_result,
             )
+            ## --- end
+
+            return flask.redirect(flask.url_for("_profile", username=username))
+
         moods = getqualia("moods")
         colors = getqualia("colors")
         scents = getqualia("scents")
         tastes = getqualia("tastes")
         shapes = getqualia("shapes")
-        media = getqualia("media_genres")
-        music = getqualia("music_genres")
+        media_genres = getqualia("media_genres")
+        music_genres = getqualia("music_genres")
         return flask.render_template(
             "quiz.html",
             moods=moods,
@@ -110,8 +165,8 @@ def create_app() -> flask.Flask:
             scents=scents,
             tastes=tastes,
             shapes=shapes,
-            media=media,
-            music=music,
+            media_genres=media_genres,
+            music_genres=music_genres,
         )
 
     @app.route("/<username>/edit", methods=["GET", "POST"])
