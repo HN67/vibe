@@ -56,7 +56,7 @@ class Database:
         try:
             data: t.Sequence[t.Tuple[t.Any, ...]] = cursor.fetchall()
         except mariadb.ProgrammingError as e:
-            logger.debug(e)
+            logger.debug("Exception getting data from cursor: %s", e)
             data = []
 
         if cursor.description is not None:
@@ -65,7 +65,7 @@ class Database:
                     column[0] for column in cursor.description
                 )
             except mariadb.ProgrammingError as e:
-                logger.debug(e)
+                logger.debug("Exception getting headers: %s", e)
                 headers = tuple()
         else:
             headers = tuple()
@@ -79,7 +79,7 @@ class Database:
             while cursor.nextset():
                 pass
         except mariadb.ProgrammingError as e:
-            logger.debug(e)
+            logger.debug("Exception advancing result sets: %s", e)
 
         return Result(headers=headers, rows=data, auto=auto)
 
