@@ -8,7 +8,7 @@ import flask
 import mariadb
 import toml
 
-logger = logging.getLogger("api")
+logger = logging.getLogger(__name__)
 
 # TODO try and avoid smashing flask logging
 # put endpoint still isn't having any effect
