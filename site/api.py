@@ -389,6 +389,45 @@ def build_resource_api(resource: Resource) -> flask.Blueprint:
     return bp
 
 
+def build_connections_api(resource: Resource, other: Resource) -> flask.Blueprint:
+    """Build a blueprint for a connections API between two resources."""
+
+    path = f"/api/{resource.name}s_connections"
+    bp = flask.Blueprint(f"{resource.name}s_connections", __name__, url_prefix=path)
+
+    # Description: Query connections of a color
+    # URL: /api/colors_connections
+    # Method: GET
+    # Input: {"color": Optional[string], "mood": Optional[string]}
+    # Output: [{"color": string, "mood": string}]
+
+    #     Description: Create a connection with a color
+    #     URL: /api/colors_connections
+    #     Method: POST
+    #     Input: {"color": string, "mood": string}
+    #     Output: {"color": string, "mood": string}
+
+    #     Description: Delete a connection with a color
+    #     URL: /api/colors_connections
+    #     Method: DELETE
+    #     Input: {"color": string, "mood": string}
+    #     Output: {"color": string, "mood": string}
+
+    @bp.get("/")
+    def _connections() -> flask.Response:
+        """Query connections."""
+
+    @bp.put("/")
+    def _put_connection() -> flask.Response:
+        """Put a connection."""
+
+    @bp.delete("/")
+    def _delete_connection() -> flask.Response:
+        """Delete a connection."""
+
+    return bp
+
+
 def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     """Register various API endpoints on the provided Flask app.
 
