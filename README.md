@@ -26,6 +26,24 @@ which contains the Flask site. This folder can be easily renamed.
 A flask debug server can be run from the `site` directory with `flask run`,
 which starts a server on localhost.
 
+Making the site available on other hosts requires hosting on the external interface,
+for example my pi currently has an address of `192.168.1.64`,
+so the site should be started with `flask run -h 192.168.1.64`.
+
+The site requires a configuration file to run, named `config.toml` in the `site` directory.
+This config file should contain a `[database]` section with connection parameters.
+
+For example,
+
+```toml
+[database]
+user="site"
+password="password"
+host="address"
+port=3306
+database="vibe"
+```
+
 ### Example
 
 An example/base Flask app is entirely contained in `site/app.py`.
@@ -69,6 +87,12 @@ can connect from the same machine,
 using user `site`, host `localhost`, database `vibe`, and port `7777`
 (not clear on the significance of the port, just choose it randomly),
 and appropriate password for the user `site`.
+
+To actually setup up the database,
+connect with `mysql -u root -D vibe` to automatically use `vibe`.
+
+The `SOURCE` SQL command should be able to be used to execute
+large files, e.g. `tables.sql` and `procedures.sql`.
 
 ### Database Configuration
 

@@ -2,3 +2,5 @@
 .venv
 # Python compiled files
 *.pyc
+# Config file
+config.toml

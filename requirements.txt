@@ -1,6 +1,7 @@
 flask
 mariadb
 requests
+toml
 
 python-dotenv
 

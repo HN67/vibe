@@ -92,6 +92,22 @@ Output: {
         "music_genre": string,
     }
 
+    Description: Get all results for a client
+    URL: /api/clients/<client: int>/results/all
+    Method: GET
+    Input: None
+    Output: [{
+        "client": int,
+        "number": int,
+        "mood": string,
+        "taste": string,
+        "scent": string,
+        "color": string,
+        "shape": string,
+        "media_genre": string,
+        "music_genre": string,
+    }]
+
     Description: Delete a result for a client
     URL: /api/clients/<client: int>/results/<number: int>
     Method: DELETE
