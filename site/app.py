@@ -9,15 +9,20 @@ from requests.api import get, request
 
 import api
 
-rootLogger = logging.getLogger()
+root_logger = logging.getLogger()
 
 FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
-LOGGING_LEVEL = logging.INFO
+LOGGING_LEVEL = logging.DEBUG
 
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter(FORMAT_STRING))
-rootLogger.addHandler(handler)
-rootLogger.setLevel(LOGGING_LEVEL)
+root_logger.addHandler(handler)
+root_logger.setLevel(LOGGING_LEVEL)
+
+# Remove werkzeug handlers
+werkzeug_logger = logging.getLogger("werkzeug")
+for _handler in list(werkzeug_logger.handlers):
+    werkzeug_logger.removeHandler(_handler)
 
 
 def getuserinfo(username):

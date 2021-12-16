@@ -9,17 +9,10 @@ import mariadb
 import toml
 
 logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 # TODO try and avoid smashing flask logging
 # put endpoint still isn't having any effect
-
-FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
-LOGGING_LEVEL = logging.DEBUG
-
-handler = logging.StreamHandler()
-handler.setFormatter(logging.Formatter(FORMAT_STRING))
-logger.addHandler(handler)
-logger.setLevel(LOGGING_LEVEL)
 
 
 @dataclasses.dataclass()
