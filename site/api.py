@@ -41,7 +41,8 @@ class Database:
         logger.info("Performing procedure %s with arguments %s", name, arguments)
 
         # Create a new cursor, helps ensure not deadlocking
-        with self.connection.cursor() as cursor:
+        connection = self.connection
+        with connection.cursor() as cursor:
 
             cursor.callproc(name, arguments)
 
@@ -74,7 +75,7 @@ class Database:
                 logger.debug("Exception advancing result sets: %s", e)
 
             # try committing?
-            cursor.commit()
+            connection.commit()
 
             return Result(headers=headers, rows=data, auto=auto)
 
