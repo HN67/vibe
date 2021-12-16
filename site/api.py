@@ -9,8 +9,14 @@ import mariadb
 import toml
 
 logger = logging.getLogger(__name__)
-logger.addHandler(logging.NullHandler())
 
+FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
+LOGGING_LEVEL = logging.INFO
+
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter(FORMAT_STRING))
+logger.addHandler(handler)
+logger.setLevel(LOGGING_LEVEL)
 
 @dataclasses.dataclass()
 class Result:
