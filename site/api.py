@@ -360,15 +360,27 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     @app.put("/api/moods/<name>")
     def _put_mood(name: str) -> flask.Response:
         """Put a mood."""
+        # TODO comment this better
         with get_db() as db:
+            try:
+                old = db.procedure("get_mood", (name,)).one()
+            except IndexError:
+                old = None
             db.procedure("put_mood", (name,))
-            return flask.jsonify({"name": name})
+            if old is None:
+                try:
+                    return flask.jsonify(db.procedure("get_mood", (name,)).one())
+                except IndexError:
+                    flask.abort(500)
+            else:
+                return flask.jsonify(old)
 
     @app.delete("/api/moods/<name>")
     def _delete_mood(name: str) -> flask.Response:
         """Delete a mood."""
         with get_db() as db:
             db.procedure("delete_mood", (name,))
+            # TODO decide what delete returns
             return flask.jsonify({"name": name})
 
     return app
