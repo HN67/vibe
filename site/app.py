@@ -127,40 +127,34 @@ def create_app() -> flask.Flask:
             print("mood: " + client_result["mood"])
 
             # use result to fill in anything missing
-            for q in ["color", "scent", "taste", "shape", "media_genre", "music_genre"]:
+            for q in [
+                "color",
+                "scent",
+                "taste",
+                "shape",
+                "media_genre",
+                "music_genre",
+            ]:
                 # get value from the radio buttons
                 selected = flask.request.form[q]
                 # if they didn't pick anything then we give them a suggestions
-                print(q + "  " + selected)
                 if selected == "":
-                    selected = "just vibe bro"
-                #     qualia_connections_raw = requests.get(
-                #         api_url(q + "_connections"), params={"mood": selected_mood}
-                #     )
-                #     qualia_connections = qualia_connections_raw.json()
-                #     print(qualia_connections[0][q])
-                #     selected = qualia_connections[0][q]
+                    qualia_connections = getconnections((q + "s"), selected_mood)
+                    selected = qualia_connections[0][q]
                 # then add it to their result
                 client_result[q] = selected
-                print(q + "  " + selected)
 
             # now we put the result in the database for the client using the API
             username = flask.request.form["username"]
             userinfo = getuserinfo(username)
-            requests.post(
-                api_url("client/" + str(userinfo["id"] + "/results/")),
-                params=client_result,
-            )
+            print(client_result)
+            # requests.post(
+            #     api_url("client/" + str(userinfo["id"]) + "/results/"),
+            #     params=flask.jsonify(client_result),
+            # )
             ## --- end
 
             return flask.redirect(flask.url_for("_profile", username=username))
-        # getting connection with mood being sad
-        print(getconnections("tastes", "sad"))
-        print(getconnections("colors", "sad"))
-        print(getconnections("scents", "sad"))
-        print(getconnections("shapes", "sad"))
-        print(getconnections("media_genres", "sad"))
-        print(getconnections("music_genres", "sad"))
 
         moods = getqualia("moods")
         colors = getqualia("colors")

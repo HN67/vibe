@@ -245,21 +245,21 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         except KeyError:
             flask.abort(404)
 
-    tc = [{"taste": "bitter", "mood": "sad"}, {"taste": "sweet", "mood": "happy"}]
+    tc = [{"taste": "Bitter", "mood": "Sad"}, {"tastes": "Sweet", "mood": "happy"}]
     cc = [
-        {"color": "red", "mood": "sad"},
+        {"color": "Red", "mood": "Sad"},
     ]
     shapec = [
-        {"shape": "circle", "mood": "sad"},
+        {"shape": "Circle", "mood": "Sad"},
     ]
     scentc = [
-        {"scent": "woody", "mood": "sad"},
+        {"scent": "Woody", "mood": "Sad"},
     ]
     musicc = [
-        {"music": "R & B", "mood": "sad"},
+        {"music_genre": "R & B", "mood": "Sad"},
     ]
     mediac = [
-        {"media": "fiction", "mood": "sad"},
+        {"media_genre": "Fiction", "mood": "Sad"},
     ]
 
     @app.route("/api/<q>_connections/")
@@ -267,7 +267,6 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         """Query a client."""
         try:
             mood = flask.request.args.get("mood")
-            print("mood is: " + mood)
             result = []
             if q == "tastes":
                 for con in tc:
