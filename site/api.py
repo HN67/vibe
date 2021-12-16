@@ -342,7 +342,8 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
         """Query list of moods."""
         logger.debug("/moods/ endpoint called")
         with get_db() as db:
-            return flask.jsonify([mood for (mood,) in db.procedure("get_moods").rows])
+            # return flask.jsonify([mood for (mood,) in db.procedure("get_moods").rows])
+            return flask.jsonify(db.procedure("get_moods").vertical())
 
     @app.get("/api/moods/<name>")
     def _get_mood(name: str) -> flask.Response:
@@ -350,10 +351,11 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
         with get_db() as db:
             result = db.procedure("get_mood", (name,))
             try:
-                out_name = result.rows[0][0]
+                return flask.jsonify(result.one())
+                # out_name = result.rows[0][0]
             except IndexError:
                 flask.abort(404)
-            return flask.jsonify({"name": out_name})
+            # return flask.jsonify({"name": out_name})
 
     @app.put("/api/moods/<name>")
     def _put_mood(name: str) -> flask.Response:
