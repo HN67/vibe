@@ -11,7 +11,6 @@ import toml
 logger = logging.getLogger(__name__)
 logger.addHandler(logging.NullHandler())
 
-# TODO try and avoid smashing flask logging
 # put endpoint still isn't having any effect
 
 
@@ -41,7 +40,7 @@ class Database:
         """
         logger.info("Performing procedure %s with arguments %s", name, arguments)
 
-        # Create a new cursor, helps ensure committing
+        # Create a new cursor, helps ensure not deadlocking
         with self.connection.cursor() as cursor:
 
             cursor.callproc(name, arguments)
@@ -73,6 +72,9 @@ class Database:
                     pass
             except mariadb.ProgrammingError as e:
                 logger.debug("Exception advancing result sets: %s", e)
+
+            # try committing?
+            cursor.commit()
 
             return Result(headers=headers, rows=data, auto=auto)
 
