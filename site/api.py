@@ -12,8 +12,8 @@ import toml
 class Result:
     """Database result."""
 
-    headers: tuple[str, ...]
-    rows: t.Sequence[tuple[t.Any, ...]]
+    headers: t.Tuple[str, ...]
+    rows: t.Sequence[t.Tuple[t.Any, ...]]
 
     auto: t.Optional[int] = None
 
@@ -27,7 +27,7 @@ class Database:
         self.cursor = self.connection.cursor()
 
     def procedure(
-        self, name: str, arguments: t.Optional[tuple[t.Any, ...]] = None
+        self, name: str, arguments: t.Optional[t.Tuple[t.Any, ...]] = None
     ) -> Result:
         """Call a stored procedure.
 
@@ -40,12 +40,12 @@ class Database:
         cursor.callproc(name, arguments)
 
         try:
-            data: t.Sequence[tuple[t.Any, ...]] = cursor.fetchall()
+            data: t.Sequence[t.Tuple[t.Any, ...]] = cursor.fetchall()
         except mariadb.ProgrammingError:
             data = []
 
         try:
-            headers: tuple[str, ...] = tuple(column[0] for column in cursor.description)
+            headers: t.Tuple[str, ...] = tuple(column[0] for column in cursor.description)
         except mariadb.ProgrammingError:
             headers = tuple()
 
