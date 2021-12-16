@@ -44,11 +44,14 @@ class Database:
         except mariadb.ProgrammingError:
             data = []
 
-        try:
-            headers: t.Tuple[str, ...] = tuple(
-                column[0] for column in cursor.description
-            )
-        except mariadb.ProgrammingError:
+        if cursor.description is not None:
+            try:
+                headers: t.Tuple[str, ...] = tuple(
+                    column[0] for column in cursor.description
+                )
+            except mariadb.ProgrammingError:
+                headers = tuple()
+        else:
             headers = tuple()
 
         auto: t.Optional[int] = cursor.lastrowid
