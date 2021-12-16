@@ -47,6 +47,7 @@ class Database:
 
         Returns a single result set, exhausting the others if they exist.
         """
+        logger.info("Performing procedure %s with arguments %s", name, arguments)
         # we want a single cursor
         # at some point self.cursor might become a getter
         cursor = self.cursor
