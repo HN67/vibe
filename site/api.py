@@ -1,11 +1,15 @@
 """API Endpoints."""
 
 import dataclasses
+import logging
 import typing as t
 
 import flask
 import mariadb
 import toml
+
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
 
 
 @dataclasses.dataclass()

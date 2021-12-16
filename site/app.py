@@ -1,5 +1,6 @@
 """Main Flask application."""
 
+import logging
 import typing as t
 
 import flask
@@ -7,6 +8,16 @@ import requests
 from requests.api import get, request
 
 import api
+
+rootLogger = logging.getLogger()
+
+FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
+LOGGING_LEVEL = logging.INFO
+
+handler = logging.StreamHandler()
+handler.setFormatter(logging.Formatter(FORMAT_STRING))
+rootLogger.addHandler(handler)
+rootLogger.setLevel(LOGGING_LEVEL)
 
 
 def getuserinfo(username):
