@@ -4,6 +4,8 @@ import dataclasses
 import logging
 import typing as t
 
+from requests.api import request
+
 import flask
 import mariadb
 import toml
@@ -149,7 +151,7 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         try:
             return flask.jsonify(
                 {
-                    "id": id,
+                    "id": clientId,
                     "birthday": someuser["birthday"],
                     "email": someuser["email"],
                     "displayName": someuser["displayName"],
@@ -240,6 +242,58 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         """Query a client."""
         try:
             return flask.jsonify(music)
+        except KeyError:
+            flask.abort(404)
+
+    tc = [{"taste": "bitter", "mood": "sad"}, {"taste": "sweet", "mood": "happy"}]
+    cc = [
+        {"color": "red", "mood": "sad"},
+    ]
+    shapec = [
+        {"shape": "circle", "mood": "sad"},
+    ]
+    scentc = [
+        {"scent": "woody", "mood": "sad"},
+    ]
+    musicc = [
+        {"music": "R & B", "mood": "sad"},
+    ]
+    mediac = [
+        {"media": "fiction", "mood": "sad"},
+    ]
+
+    @app.route("/api/<q>_connections/")
+    def _connection(q) -> flask.Response:
+        """Query a client."""
+        try:
+            mood = flask.request.args.get("mood")
+            print("mood is: " + mood)
+            result = []
+            if q == "tastes":
+                for con in tc:
+                    if con["mood"] == mood:
+                        result.append(con)
+            elif q == "colors":
+                for con in cc:
+                    if con["mood"] == mood:
+                        result.append(con)
+            elif q == "scents":
+                for con in scentc:
+                    if con["mood"] == mood:
+                        result.append(con)
+            elif q == "shapes":
+                for con in shapec:
+                    if con["mood"] == mood:
+                        result.append(con)
+            elif q == "music_genres":
+                for con in musicc:
+                    if con["mood"] == mood:
+                        result.append(con)
+            else:
+                for con in mediac:
+                    if con["mood"] == mood:
+                        result.append(con)
+            return flask.jsonify(result)
         except KeyError:
             flask.abort(404)
 

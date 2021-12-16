@@ -58,6 +58,13 @@ def currentinfo(s, userinfo):
         return userinfo["bio"]
 
 
+def getconnections(q, m):
+    resp = requests.get(api.api_url(q + "_connections"), params={"mood": m})
+    # parse response
+    moods = resp.json()
+    return moods
+
+
 def create_app() -> flask.Flask:
     """Create the Flask instance."""
 
@@ -147,6 +154,13 @@ def create_app() -> flask.Flask:
             ## --- end
 
             return flask.redirect(flask.url_for("_profile", username=username))
+        # getting connection with mood being sad
+        print(getconnections("tastes", "sad"))
+        print(getconnections("colors", "sad"))
+        print(getconnections("scents", "sad"))
+        print(getconnections("shapes", "sad"))
+        print(getconnections("media_genres", "sad"))
+        print(getconnections("music_genres", "sad"))
 
         moods = getqualia("moods")
         colors = getqualia("colors")
@@ -200,6 +214,6 @@ def create_app() -> flask.Flask:
             ]
         )
 
-    app = api.build_api(app, mock=False)
+    app = api.build_api(app, mock=True)
 
     return app
