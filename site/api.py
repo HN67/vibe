@@ -14,7 +14,7 @@ logger = logging.getLogger("api")
 # put endpoint still isn't having any effect
 
 FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
-LOGGING_LEVEL = logging.INFO
+LOGGING_LEVEL = logging.DEBUG
 
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter(FORMAT_STRING))
