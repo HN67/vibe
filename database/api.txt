@@ -454,6 +454,21 @@ Output: [int]
         "bio": string,
     }
 
+Description: Get list of usernames
+URL: /api/usernames/
+Method: GET
+Input: None
+Output: [username]
+
+Description: Get information on a username
+URL: /api/usernames/<username: string>
+Method: GET
+Input: None
+Output: {
+    "id": int,
+    "username": string,
+}
+
 Description: Get list of results for a client
 URL: /api/clients/<client: int>/results/
 Method: GET
@@ -499,6 +514,22 @@ Output: {
         "media_genre": string,
         "music_genre": string,
     }
+
+    Description: Get all results for a client
+    URL: /api/clients/<client: int>/results/all
+    Method: GET
+    Input: None
+    Output: [{
+        "client": int,
+        "number": int,
+        "mood": string,
+        "taste": string,
+        "scent": string,
+        "color": string,
+        "shape": string,
+        "media_genre": string,
+        "music_genre": string,
+    }]
 
     Description: Delete a result for a client
     URL: /api/clients/<client: int>/results/<number: int>
