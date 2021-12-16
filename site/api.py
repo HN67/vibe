@@ -8,7 +8,10 @@ import flask
 import mariadb
 import toml
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("api")
+
+# TODO try and avoid smashing flask logging
+# put endpoint still isn't having any effect
 
 FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
 LOGGING_LEVEL = logging.INFO
@@ -17,6 +20,7 @@ handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter(FORMAT_STRING))
 logger.addHandler(handler)
 logger.setLevel(LOGGING_LEVEL)
+
 
 @dataclasses.dataclass()
 class Result:
@@ -51,7 +55,8 @@ class Database:
 
         try:
             data: t.Sequence[t.Tuple[t.Any, ...]] = cursor.fetchall()
-        except mariadb.ProgrammingError:
+        except mariadb.ProgrammingError as e:
+            logger.debug(e)
             data = []
 
         if cursor.description is not None:
@@ -59,7 +64,8 @@ class Database:
                 headers: t.Tuple[str, ...] = tuple(
                     column[0] for column in cursor.description
                 )
-            except mariadb.ProgrammingError:
+            except mariadb.ProgrammingError as e:
+                logger.debug(e)
                 headers = tuple()
         else:
             headers = tuple()
@@ -73,7 +79,7 @@ class Database:
             while cursor.nextset():
                 pass
         except mariadb.ProgrammingError:
-            pass
+            logger.debug(e)
 
         return Result(headers=headers, rows=data, auto=auto)
 
