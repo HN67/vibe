@@ -80,6 +80,55 @@ CREATE OR REPLACE PROCEDURE delete_taste(IN type NVARCHAR(255))
     END;
 //    
 
+CREATE OR REPLACE PROCEDURE put_tasteaffects(IN taste NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        INSERT INTO TasteAffects (taste, mood)
+        VALUES (taste, mood)
+        ON DUPLICATE KEY UPDATE
+            TasteAffects.taste = taste, TasteAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE delete_tasteaffects(IN taste NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        DELETE FROM TasteAffects
+        WHERE TasteAffects.taste = taste AND TasteAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_tasteaffects_mood(IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT taste, mood
+        FROM TasteAffects
+        WHERE TasteAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_tasteaffects_taste(IN taste NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT taste, mood
+        FROM TasteAffects
+        WHERE TasteAffects.taste = taste
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_tasteaffects()
+    READS SQL DATA
+    BEGIN
+        SELECT taste, mood
+        FROM TasteAffects
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_scents()
     READS SQL DATA
     BEGIN
@@ -118,6 +167,55 @@ CREATE OR REPLACE PROCEDURE delete_scent(IN name NVARCHAR(255))
         ;
     END;
 //    
+
+CREATE OR REPLACE PROCEDURE put_scentaffects(IN scent NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        INSERT INTO ScentAffects (scent, mood)
+        VALUES (scent, mood)
+        ON DUPLICATE KEY UPDATE
+            ScentAffects.scent = scent, ScentAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE delete_scentaffects(IN scent NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        DELETE FROM ScentAffects
+        WHERE ScentAffects.scent = scent AND ScentAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_scentaffects_mood(IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT scent, mood
+        FROM ScentAffects
+        WHERE ScentAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_scentaffects_scent(IN scent NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT scent, mood
+        FROM ScentAffects
+        WHERE ScentAffects.scent = scent
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_scentaffects()
+    READS SQL DATA
+    BEGIN
+        SELECT scent, mood
+        FROM ScentAffects
+        ;
+    END;
+//
 
 CREATE OR REPLACE PROCEDURE get_colors()
     READS SQL DATA
@@ -158,6 +256,55 @@ CREATE OR REPLACE PROCEDURE delete_color(IN name NVARCHAR(255))
     END;
 //    
 
+CREATE OR REPLACE PROCEDURE put_coloraffects(IN color NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        INSERT INTO ColorAffects (color, mood)
+        VALUES (color, mood)
+        ON DUPLICATE KEY UPDATE
+            ColorAffects.color = color, ColorAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE delete_coloraffects(IN color NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        DELETE FROM ColorAffects
+        WHERE ColorAffects.color = color AND ColorAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_coloraffects_mood(IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT color, mood
+        FROM ColorAffects
+        WHERE ColorAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_coloraffects_color(IN color NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT color, mood
+        FROM ColorAffects
+        WHERE ColorAffects.color = color
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_coloraffects()
+    READS SQL DATA
+    BEGIN
+        SELECT color, mood
+        FROM ColorAffects
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_shapes()
     READS SQL DATA
     BEGIN
@@ -196,6 +343,55 @@ CREATE OR REPLACE PROCEDURE delete_shape(IN name NVARCHAR(255))
         ;
     END;
 //    
+
+CREATE OR REPLACE PROCEDURE put_shapeaffects(IN shape NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        INSERT INTO ShapeAffects (shape, mood)
+        VALUES (shape, mood)
+        ON DUPLICATE KEY UPDATE
+            ShapeAffects.shape = shape, ShapeAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE delete_shapeaffects(IN shape NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        DELETE FROM ShapeAffects
+        WHERE ShapeAffects.shape = shape AND ShapeAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_shapeaffects_mood(IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT shape, mood
+        FROM ShapeAffects
+        WHERE ShapeAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_shapeaffects_shape(IN shape NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT shape, mood
+        FROM ShapeAffects
+        WHERE ShapeAffects.shape = shape
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_shapeaffects()
+    READS SQL DATA
+    BEGIN
+        SELECT shape, mood
+        FROM ShapeAffects
+        ;
+    END;
+//
 
 CREATE OR REPLACE PROCEDURE get_mediagenres()
     READS SQL DATA
@@ -236,6 +432,55 @@ CREATE OR REPLACE PROCEDURE delete_mediagenre(IN name NVARCHAR(255))
     END;
 //    
 
+CREATE OR REPLACE PROCEDURE put_mediaaffects(IN media NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        INSERT INTO MediaAffects (media, mood)
+        VALUES (media, mood)
+        ON DUPLICATE KEY UPDATE
+            MediaAffects.media = media, MediaAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE delete_mediaaffects(IN media NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        DELETE FROM MediaAffects
+        WHERE MediaAffects.media = media AND MediaAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_mediaaffects_mood(IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT media, mood
+        FROM MediaAffects
+        WHERE MediaAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_mediaaffects_media(IN media NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT media, mood
+        FROM MediaAffects
+        WHERE MediaAffects.media = media
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_mediaaffects()
+    READS SQL DATA
+    BEGIN
+        SELECT media, mood
+        FROM MediaAffects
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_musicgenres()
     READS SQL DATA
     BEGIN
@@ -275,11 +520,60 @@ CREATE OR REPLACE PROCEDURE delete_musicgenre(IN name NVARCHAR(255))
     END;
 //    
 
+CREATE OR REPLACE PROCEDURE put_musicaffects(IN music NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        INSERT INTO MusicAffects (music, mood)
+        VALUES (music, mood)
+        ON DUPLICATE KEY UPDATE
+            MusicAffects.music = music, MusicAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE delete_musicaffects(IN music NVARCHAR(255), IN mood NVARCHAR(255))
+    MODIFIES SQL DATA
+    BEGIN
+        DELETE FROM MusicAffects
+        WHERE MusicAffects.music = music AND MusicAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_musicaffects_mood(IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT music, mood
+        FROM MusicAffects
+        WHERE MusicAffects.mood = mood
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_musicaffects_music(IN music NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT music, mood
+        FROM MusicAffects
+        WHERE MusicAffects.music = music
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_musicaffects()
+    READS SQL DATA
+    BEGIN
+        SELECT music, mood
+        FROM MusicAffects
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_admins()
     READS SQL DATA
     BEGIN
         SELECT id
-        FROM admin
+        FROM Admin
         ;
     END;
 //
@@ -288,8 +582,8 @@ CREATE OR REPLACE PROCEDURE get_admin(IN id INT)
     READS SQL DATA
     BEGIN
         SELECT id, permissions
-        FROM admin
-        WHERE admin.id = id
+        FROM Admin
+        WHERE Admin.id = id
         ;
     END;
 //
@@ -297,10 +591,10 @@ CREATE OR REPLACE PROCEDURE get_admin(IN id INT)
 CREATE OR REPLACE PROCEDURE put_admin(IN id INT, IN permissions INT)
     MODIFIES SQL DATA
     BEGIN
-        INSERT INTO admin (id, permissions)
+        INSERT INTO Admin (id, permissions)
         VALUES (id, permissions)
             ON DUPLICATE KEY UPDATE
-            admin.id = id, admin.permissions = permissions
+            Admin.id = id, Admin.permissions = permissions
         ;
     END;
 //
@@ -308,8 +602,8 @@ CREATE OR REPLACE PROCEDURE put_admin(IN id INT, IN permissions INT)
 CREATE OR REPLACE PROCEDURE delete_admin(IN id INT)
     MODIFIES SQL DATA
     BEGIN
-        DELETE FROM admin
-        WHERE admin.id = id
+        DELETE FROM Admin
+        WHERE Admin.id = id
         ;
     END;
 //    
@@ -318,7 +612,7 @@ CREATE OR REPLACE PROCEDURE get_clients()
     READS SQL DATA
     BEGIN
         SELECT id
-        FROM client
+        FROM Client
         ;
     END;
 //
@@ -327,8 +621,8 @@ CREATE OR REPLACE PROCEDURE get_client(IN id INT)
     READS SQL DATA
     BEGIN
         SELECT id, birthday, email, displayName, bio
-        FROM client
-        WHERE client.id = id
+        FROM Client
+        WHERE Client.id = id
         ;
     END;
 //
@@ -336,10 +630,10 @@ CREATE OR REPLACE PROCEDURE get_client(IN id INT)
 CREATE OR REPLACE PROCEDURE put_client(IN id INT, IN birthday DATE, IN email NVARCHAR(255), IN displayName NVARCHAR(255), IN bio NVARCHAR(255))
     MODIFIES SQL DATA
     BEGIN
-        INSERT INTO client (id, birthday, email, displayName, bio)
+        INSERT INTO Client (id, birthday, email, displayName, bio)
         VALUES (id, birthday, email, displayName, bio)
             ON DUPLICATE KEY UPDATE
-            client.id = id, client.birthday = birthday, client.email = email, client.displayName = displayName, client.bio = bio
+            Client.id = id, Client.birthday = birthday, Client.email = email, Client.displayName = displayName, Client.bio = bio
         ;
     END;
 //
@@ -347,8 +641,8 @@ CREATE OR REPLACE PROCEDURE put_client(IN id INT, IN birthday DATE, IN email NVA
 CREATE OR REPLACE PROCEDURE delete_client(IN id INT)
     MODIFIES SQL DATA
     BEGIN
-        DELETE FROM client
-        WHERE client.id = id
+        DELETE FROM Client
+        WHERE Client.id = id
         ;
     END;
 //    
