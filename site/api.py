@@ -38,7 +38,6 @@ class Database:
     def __init__(self, **params: t.Union[str, int]) -> None:
         """Initialize a Database model."""
         self.connection = mariadb.connect(**params)
-        self.cursor = self.connection.cursor()
 
     def procedure(
         self, name: str, arguments: t.Optional[t.Tuple[t.Any, ...]] = None
@@ -48,41 +47,41 @@ class Database:
         Returns a single result set, exhausting the others if they exist.
         """
         logger.info("Performing procedure %s with arguments %s", name, arguments)
-        # we want a single cursor
-        # at some point self.cursor might become a getter
-        cursor = self.cursor
 
-        cursor.callproc(name, arguments)
+        # Create a new cursor, helps ensure committing
+        with self.connection.cursor() as cursor:
 
-        try:
-            data: t.Sequence[t.Tuple[t.Any, ...]] = cursor.fetchall()
-        except mariadb.ProgrammingError as e:
-            logger.debug("Exception getting data from cursor: %s", e)
-            data = []
+            cursor.callproc(name, arguments)
 
-        if cursor.description is not None:
             try:
-                headers: t.Tuple[str, ...] = tuple(
-                    column[0] for column in cursor.description
-                )
+                data: t.Sequence[t.Tuple[t.Any, ...]] = cursor.fetchall()
             except mariadb.ProgrammingError as e:
-                logger.debug("Exception getting headers: %s", e)
+                logger.debug("Exception getting data from cursor: %s", e)
+                data = []
+
+            if cursor.description is not None:
+                try:
+                    headers: t.Tuple[str, ...] = tuple(
+                        column[0] for column in cursor.description
+                    )
+                except mariadb.ProgrammingError as e:
+                    logger.debug("Exception getting headers: %s", e)
+                    headers = tuple()
+            else:
                 headers = tuple()
-        else:
-            headers = tuple()
 
-        auto: t.Optional[int] = cursor.lastrowid
+            auto: t.Optional[int] = cursor.lastrowid
 
-        # documentation sucks real bad about mariadb
-        # but it seems like this will return None if the results have been exhausted
-        # nextset throws exception if non querying statement, e.g. INSERT
-        try:
-            while cursor.nextset():
-                pass
-        except mariadb.ProgrammingError as e:
-            logger.debug("Exception advancing result sets: %s", e)
+            # documentation sucks real bad about mariadb
+            # but it seems like this will return None if the results have been exhausted
+            # nextset throws exception if non querying statement, e.g. INSERT
+            try:
+                while cursor.nextset():
+                    pass
+            except mariadb.ProgrammingError as e:
+                logger.debug("Exception advancing result sets: %s", e)
 
-        return Result(headers=headers, rows=data, auto=auto)
+            return Result(headers=headers, rows=data, auto=auto)
 
     def close(self) -> None:
         """Close the database connection."""
@@ -263,6 +262,7 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     @app.get("/api/moods/")
     def _get_moods() -> flask.Response:
         """Query list of moods."""
+        logger.debug("/moods/ endpoint called")
         with get_db() as db:
             return flask.jsonify([mood for (mood,) in db.procedure("get_moods").rows])
 
