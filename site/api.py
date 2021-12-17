@@ -538,21 +538,55 @@ def build_custom_api() -> flask.Blueprint:
     def _get_results(clientId: int) -> flask.Response:
         """Get result ids for a client."""
 
+        with get_db() as db:
+            return flask.jsonify(db.procedure("get_results", (clientId,)).vertical())
+
     @bp.post("/clients/<clientId>/results/")
     def _post_results(clientId: int) -> flask.Response:
         """Create a result for a client."""
+
+        body = flask.request.json
+        if body is None:
+            flask.abort(400)
+        # (clientId, mood, taste, scent, color, shape, media, music)
+
+        try:
+            parameters = (
+                clientId,
+                body["mood"],
+                body["taste"],
+                body["scent"],
+                body["shape"],
+                body["media_genre"],
+                body["music_genre"],
+            )
+        except KeyError:
+            flask.abort(400)
+
+        with get_db() as db:
+            db.procedure("post_result", parameters)
+        return flask.jsonify({"client": clientId})
 
     @bp.get("/clients/<clientId>/results/all")
     def _get_all_results(clientId: int) -> flask.Response:
         """Get full response set for a client."""
 
+        with get_db() as db:
+            return flask.jsonify(db.procedure("get_result_all", (clientId,)).all())
+
     @bp.get("/clients/<clientId>/results/<number>")
     def _get_result(clientId: int, number: int) -> flask.Response:
         """Get a single response of a client."""
 
+        with get_db() as db:
+            return flask.jsonify(db.procedure("get_result", (clientId, number)).one())
+
     @bp.delete("/clients/<clientId>/results/<number>")
     def _delete_result(clientId: int, number: int) -> flask.Response:
         """Delete a result of a client."""
+        with get_db() as db:
+            db.procedure("delete_result", (clientId, number))
+        return flask.jsonify({"client": clientId, "number": number})
 
     return bp
 
