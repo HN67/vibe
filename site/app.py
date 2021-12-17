@@ -136,8 +136,8 @@ def create_app() -> flask.Flask:
                 "scent": "",
                 "color": "",
                 "shape": "",
-                "media_genre": "",
-                "music_genre": "",
+                "media": "",
+                "music": "",
             }
 
             # get their mood
@@ -157,8 +157,8 @@ def create_app() -> flask.Flask:
                 "scent",
                 "taste",
                 "shape",
-                "media_genre",
-                "music_genre",
+                "media",
+                "music",
             ]:
                 # get value from the radio buttons
                 selected = flask.request.form[q]
@@ -200,8 +200,8 @@ def create_app() -> flask.Flask:
         scents = getqualia("scents")
         tastes = getqualia("tastes")
         shapes = getqualia("shapes")
-        media_genres = getqualia("media_genres")
-        music_genres = getqualia("music_genres")
+        medias = getqualia("medias")
+        musics = getqualia("musics")
         return flask.render_template(
             "quiz.html",
             moods=moods,
@@ -209,8 +209,8 @@ def create_app() -> flask.Flask:
             scents=scents,
             tastes=tastes,
             shapes=shapes,
-            media_genres=media_genres,
-            music_genres=music_genres,
+            medias=medias,
+            musics=musics,
         )
 
     @app.route("/<username>/edit", methods=["GET", "POST"])

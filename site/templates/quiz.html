@@ -68,10 +68,10 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Music</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                {% for m in music_genres %}
-                <label class="options">{{m}}<input type="radio" name="music_genre" value = "{{m}}"> <span class="checkmark"></span> </label>
+                {% for m in musics %}
+                <label class="options">{{m}}<input type="radio" name="music" value = "{{m}}"> <span class="checkmark"></span> </label>
                 {%endfor%}
-                <label class="options">Pick for me!<input type="radio" name="music_genre" value = "" checked> <span class="checkmark"></span> </label>
+                <label class="options">Pick for me!<input type="radio" name="music" value = "" checked> <span class="checkmark"></span> </label>
             </div>
         </div>
     </div>
@@ -80,10 +80,10 @@
         <div class="question ml-sm-5 pl-sm-5 pt-2">
             <div class="py-2 h5"><b>Media</b></div>
             <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
-                {% for m in media_genres %}
-                <label class="options">{{m}}<input type="radio" name="media_genre" value = "{{m}}"> <span class="checkmark"></span> </label>
+                {% for m in medias %}
+                <label class="options">{{m}}<input type="radio" name="media" value = "{{m}}"> <span class="checkmark"></span> </label>
                 {%endfor%}
-                <label class="options">Pick for me!<input type="radio" name="media_genre" value = "" checked> <span class="checkmark"></span> </label>
+                <label class="options">Pick for me!<input type="radio" name="media" value = "" checked> <span class="checkmark"></span> </label>
             </div>
         </div>
     </div>
