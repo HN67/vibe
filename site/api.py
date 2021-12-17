@@ -441,6 +441,8 @@ def build_connections_api(
         if data is None:
             flask.abort(400)
 
+        logger.info("Received data: %s", data)
+
         local_value = data[resource.name]
         other_value = data[other.name]
 
