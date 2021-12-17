@@ -115,9 +115,8 @@ def create_app() -> flask.Flask:
             username = flask.request.form["username"]
 
             # check if they are a new user. if they are, makes a new, empty profile
-            try:
-                requests.get(api.api_url("usernames/" + username))
-            except:
+            response = requests.get(api.api_url("usernames/" + username))
+            if not response.ok:
                 newuser(username)
 
             return flask.redirect(flask.url_for("_profile", username=username))
@@ -177,9 +176,8 @@ def create_app() -> flask.Flask:
             username = flask.request.form["username"]
 
             # check if they are a new user. if they are, makes a new, empty profile
-            try:
-                requests.get(api.api_url("usernames/" + username))
-            except:
+            response = requests.get(api.api_url("usernames/" + username))
+            if not response.ok:
                 newuser(username)
 
             # now there is a user id to get B)

@@ -597,6 +597,8 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     Returns the app (which has had more routes registered).
     """
 
+    # TODO authenticate modification endpoints
+
     if mock:
         return build_api_mock(app)
 
