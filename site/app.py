@@ -37,7 +37,7 @@ def getuserinfo(username):
 
 
 def getuserresults(id):
-    p = "clients/" + id + "/results/all"
+    p = "clients/" + str(id) + "/results/all"
     resp = requests.get(api.api_url(p))
     # parse response
     results = resp.json()
