@@ -177,6 +177,8 @@ def create_app() -> flask.Flask:
 
             # now we put the result in the database for the client using the API
             username = flask.request.form["username"]
+            if not username:
+                return flask.redirect(flask.url_for("_quiz"))
 
             # check if they are a new user. if they are, makes a new, empty profile
             response = requests.get(api.api_url("usernames/" + username))
