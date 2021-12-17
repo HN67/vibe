@@ -69,7 +69,7 @@ def getconnections(q, m):
 
 
 def makeconnection(q, m, s):
-    requests.post(api.api_url(q + "_connections"), json={q: s, "mood": m})
+    requests.post(api.api_url(q + "s_connections"), json={q: s, "mood": m})
     # parse response
     return
 
@@ -168,7 +168,7 @@ def create_app() -> flask.Flask:
                     selected = qualia_connections[0][q]
                 # if they did then we make a connection with that
                 else:
-                    makeconnection((q + "s"), selected_mood, selected)
+                    makeconnection(q, selected_mood, selected)
                     print(
                         "made connection: ", q + ": " + selected, "  " + selected_mood
                     )
