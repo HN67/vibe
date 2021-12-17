@@ -619,8 +619,8 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
         mood_pair
         + simple_resources
         + [
-            (Resource("music_genre", ["name"]), "musicgenre"),
-            (Resource("media_genre", ["name"]), "mediagenre"),
+            (Resource("music", ["name"]), "musicgenre"),
+            (Resource("media", ["name"]), "mediagenre"),
             (Resource("admin", ["id", "permissions"]), None),
             (
                 Resource("client", ["id", "birthday", "email", "displayName", "bio"]),
@@ -630,8 +630,8 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     )
 
     qualia: t.List[t.Tuple[Resource, t.Optional[str]]] = simple_resources + [
-        (Resource("music_genre", ["name"]), "music"),
-        (Resource("media_genre", ["name"]), "media"),
+        (Resource("music", ["name"]), "music"),
+        (Resource("media", ["name"]), "media"),
     ]
 
     for resource, alt in resources:
