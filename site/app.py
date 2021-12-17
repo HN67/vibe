@@ -15,7 +15,7 @@ logger.addHandler(logging.NullHandler())
 root_logger = logging.getLogger()
 
 FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
-LOGGING_LEVEL = logging.DEBUG
+LOGGING_LEVEL = logging.INFO
 
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter(FORMAT_STRING))
@@ -79,10 +79,10 @@ def newuser(username):
     newuser = requests.get(api.api_url("usernames/" + username)).json()
     # make a new, empty profile
     newuserdata = {
-        "birthday": "",
-        "email": "",
-        "displayName": "",
-        "bio": "",
+        "birthday": "YYYY/MM/DD",
+        "email": "email",
+        "displayName": "display name",
+        "bio": "biography",
     }
     requests.put(api.api_url("clients/" + str(newuser["id"])), json=newuserdata)
     return
