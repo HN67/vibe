@@ -370,7 +370,7 @@ def build_resource_api(
             packet = result.one()
             if packet is None:
                 flask.abort(404)
-            return flask.jsonify(result.one())
+            return flask.jsonify(packet)
 
     @bp.put(specific_path)
     def _put(key: str) -> flask.Response:
@@ -529,10 +529,10 @@ def build_custom_api() -> flask.Blueprint:
         """Get a user for a username."""
 
         with get_db() as db:
-            packet = db.procedure("get_username", (username,))
+            packet = db.procedure("get_username", (username,)).one()
         if packet is None:
             flask.abort(404)
-        return flask.jsonify(packet.one())
+        return flask.jsonify(packet)
 
     @bp.get("/clients/<clientId>/results/")
     def _get_results(clientId: int) -> flask.Response:

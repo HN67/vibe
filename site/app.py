@@ -84,7 +84,7 @@ def newuser(username):
         "displayName": "",
         "bio": "",
     }
-    requests.put(api.api_url("clients/" + newuser["id"]), json=newuserdata)
+    requests.put(api.api_url("clients/" + str(newuser["id"])), json=newuserdata)
     return
 
 
