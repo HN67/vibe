@@ -476,18 +476,48 @@ def build_custom_api() -> flask.Blueprint:
     bp = flask.Blueprint("api", __name__, url_prefix=path)
 
     @bp.get("/users/")
+    def _get_users() -> flask.Response:
+        """Get all users."""
+
     @bp.post("/users/")
+    def _post_users() -> flask.Response:
+        """Make a user."""
+
     @bp.get("/users/<user>")
+    def _get_user(user: int) -> flask.Response:
+        """Get a single user."""
+
     @bp.delete("/users/<user>")
+    def _delete_user(user: int) -> flask.Response:
+        """Delete a user."""
+
     @bp.get("/usernames/")
+    def _get_usernames() -> flask.Response:
+        """Get all usernames."""
+
     @bp.get("/usernames/<username>")
+    def _get_username(username: str) -> flask.Response:
+        """Get a user for a username."""
+
     @bp.get("/clients/<clientId>/results/")
+    def _get_results(clientId: int) -> flask.Response:
+        """Get result ids for a client."""
+
     @bp.post("/clients/<clientId>/results/")
+    def _post_results(clientId: int) -> flask.Response:
+        """Create a result for a client."""
+
     @bp.get("/clients/<clientId>/results/all")
+    def _get_all_results(clientId: int) -> flask.Response:
+        """Get full response set for a client."""
+
     @bp.get("/clients/<clientId>/results/<number>")
+    def _get_result(clientId: int, number: int) -> flask.Response:
+        """Get a single response of a client."""
+
     @bp.delete("/clients/<clientId>/results/<number>")
-    def _() -> None:
-        """Blank."""
+    def _delete_result(clientId: int, number: int) -> flask.Response:
+        """Delete a result of a client."""
 
     return bp
 
