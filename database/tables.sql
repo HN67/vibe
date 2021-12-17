@@ -57,7 +57,7 @@ CREATE TABLE Admin (
 
 CREATE TABLE Client (
     id INT NOT NULL,
-    birthday DATE,
+    birthday NVARCHAR(255),
     email NVARCHAR(255),
     displayName NVARCHAR(255),
     bio NVARCHAR(4095),
