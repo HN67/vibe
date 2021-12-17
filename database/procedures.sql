@@ -707,7 +707,6 @@ CREATE OR REPLACE PROCEDURE delete_client(IN id INT)
     END;
 //    
 
-
 CREATE OR REPLACE PROCEDURE get_users()
     READS SQL DATA
     BEGIN
