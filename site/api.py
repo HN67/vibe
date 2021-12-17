@@ -368,10 +368,10 @@ def build_resource_api(
         """Query a resource."""
         with get_db() as db:
             result = db.procedure(f"get_{alt}", (key,))
-            try:
-                return flask.jsonify(result.one())
-            except IndexError:
+            packet = result.one()
+            if packet is None:
                 flask.abort(404)
+            return flask.jsonify(result.one())
 
     @bp.put(specific_path)
     def _put(key: str) -> flask.Response:
@@ -504,10 +504,10 @@ def build_custom_api() -> flask.Blueprint:
         with get_db() as db:
             result = db.procedure("get_user", (user,))
 
-        try:
-            return flask.jsonify(result.one())
-        except IndexError:
+        packet = result.one()
+        if packet is None:
             flask.abort(404)
+        return flask.jsonify(packet)
 
     @bp.delete("/users/<user>")
     def _delete_user(user: int) -> flask.Response:
