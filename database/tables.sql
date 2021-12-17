@@ -91,7 +91,7 @@ CREATE TABLE Result (
         REFERENCES Scent(name)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (shape)
-        REFERENCES Color(name)
+        REFERENCES Shape(name)
         ON UPDATE CASCADE ON DELETE RESTRICT,
     FOREIGN KEY (color)
         REFERENCES Color(name)
