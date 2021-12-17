@@ -104,8 +104,11 @@ def create_app() -> flask.Flask:
 
     @app.route("/profile/<username>")
     def _profile(username) -> str:
-        userinfo = getuserinfo(username)
-        results = getuserresults(userinfo["id"])
+        try:
+            userinfo = getuserinfo(username)
+            results = getuserresults(userinfo["id"])
+        except:
+            flask.abort(404)
         print(results)
         return flask.render_template(
             "profile.html", username=username, userinfo=userinfo, results=results
