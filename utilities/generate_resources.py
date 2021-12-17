@@ -245,6 +245,16 @@ CREATE OR REPLACE PROCEDURE get_{this.name}affects_{this.name}(IN {this.name} {t
     END;
 //
 
+CREATE OR REPLACE PROCEDURE get_{this.name}affects_{this.name}_{other.name}({parameters})
+    READS SQL DATA
+    BEGIN
+        SELECT {selections}
+        FROM {table}
+        WHERE {delete_portion}
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_{this.name}affects()
     READS SQL DATA
     BEGIN

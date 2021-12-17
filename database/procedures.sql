@@ -120,6 +120,16 @@ CREATE OR REPLACE PROCEDURE get_tasteaffects_taste(IN taste NVARCHAR(255))
     END;
 //
 
+CREATE OR REPLACE PROCEDURE get_tasteaffects_taste_mood(IN taste NVARCHAR(255), IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT taste, mood
+        FROM TasteAffects
+        WHERE TasteAffects.taste = taste AND TasteAffects.mood = mood
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_tasteaffects()
     READS SQL DATA
     BEGIN
@@ -204,6 +214,16 @@ CREATE OR REPLACE PROCEDURE get_scentaffects_scent(IN scent NVARCHAR(255))
         SELECT scent, mood
         FROM ScentAffects
         WHERE ScentAffects.scent = scent
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_scentaffects_scent_mood(IN scent NVARCHAR(255), IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT scent, mood
+        FROM ScentAffects
+        WHERE ScentAffects.scent = scent AND ScentAffects.mood = mood
         ;
     END;
 //
@@ -296,6 +316,16 @@ CREATE OR REPLACE PROCEDURE get_coloraffects_color(IN color NVARCHAR(255))
     END;
 //
 
+CREATE OR REPLACE PROCEDURE get_coloraffects_color_mood(IN color NVARCHAR(255), IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT color, mood
+        FROM ColorAffects
+        WHERE ColorAffects.color = color AND ColorAffects.mood = mood
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_coloraffects()
     READS SQL DATA
     BEGIN
@@ -380,6 +410,16 @@ CREATE OR REPLACE PROCEDURE get_shapeaffects_shape(IN shape NVARCHAR(255))
         SELECT shape, mood
         FROM ShapeAffects
         WHERE ShapeAffects.shape = shape
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_shapeaffects_shape_mood(IN shape NVARCHAR(255), IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT shape, mood
+        FROM ShapeAffects
+        WHERE ShapeAffects.shape = shape AND ShapeAffects.mood = mood
         ;
     END;
 //
@@ -472,6 +512,16 @@ CREATE OR REPLACE PROCEDURE get_mediaaffects_media(IN media NVARCHAR(255))
     END;
 //
 
+CREATE OR REPLACE PROCEDURE get_mediaaffects_media_mood(IN media NVARCHAR(255), IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT media, mood
+        FROM MediaAffects
+        WHERE MediaAffects.media = media AND MediaAffects.mood = mood
+        ;
+    END;
+//
+
 CREATE OR REPLACE PROCEDURE get_mediaaffects()
     READS SQL DATA
     BEGIN
@@ -556,6 +606,16 @@ CREATE OR REPLACE PROCEDURE get_musicaffects_music(IN music NVARCHAR(255))
         SELECT music, mood
         FROM MusicAffects
         WHERE MusicAffects.music = music
+        ;
+    END;
+//
+
+CREATE OR REPLACE PROCEDURE get_musicaffects_music_mood(IN music NVARCHAR(255), IN mood NVARCHAR(255))
+    READS SQL DATA
+    BEGIN
+        SELECT music, mood
+        FROM MusicAffects
+        WHERE MusicAffects.music = music AND MusicAffects.mood = mood
         ;
     END;
 //
@@ -646,6 +706,7 @@ CREATE OR REPLACE PROCEDURE delete_client(IN id INT)
         ;
     END;
 //    
+
 
 CREATE OR REPLACE PROCEDURE get_users()
     READS SQL DATA
