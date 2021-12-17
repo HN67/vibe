@@ -9,6 +9,9 @@ from requests.api import get, request
 
 import api
 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
+
 root_logger = logging.getLogger()
 
 FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
@@ -225,6 +228,7 @@ def create_app() -> flask.Flask:
                 "displayName": displayname,
                 "bio": bio,
             }
+            logger.info("Sending data %s", data)
             requests.put(api.api_url("clients/" + str(userinfo["id"])), data=data)
             return flask.redirect(flask.url_for("_profile", username=username))
         return flask.render_template(
