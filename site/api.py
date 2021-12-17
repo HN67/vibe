@@ -598,4 +598,6 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     for resource, alt in qualia:
         app.register_blueprint(build_connections_api(resource, mood, alt))
 
+    app.register_blueprint(build_custom_api())
+
     return app
