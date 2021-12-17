@@ -495,7 +495,7 @@ def build_custom_api() -> flask.Blueprint:
         with get_db() as db:
             result = db.procedure("post_user", (username,))
 
-        return flask.jsonify({"id": result.auto, "username": username})
+        return flask.jsonify({"username": username})
 
     @bp.get("/users/<user>")
     def _get_user(user: int) -> flask.Response:
