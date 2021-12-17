@@ -384,7 +384,7 @@ def build_resource_api(
                 [key] + [body[attr] for attr in resource.others]
             )
         else:
-            parameters = None
+            parameters = (key,)
         with get_db() as db:
             db.procedure(f"put_{alt}", parameters)
         return flask.jsonify({resource.key: key})
