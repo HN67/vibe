@@ -55,7 +55,7 @@ def currentinfo(s, userinfo):
     if flask.request.form[s] != "":
         return flask.request.form[s]
     else:
-        return userinfo["bio"]
+        return userinfo[s]
 
 
 def getconnections(q, m):

@@ -376,6 +376,7 @@ def build_resource_api(
     def _put(key: str) -> flask.Response:
         """Put a resource."""
         body = flask.request.json
+        logging.info("Put endpoint received data: %s", body)
         if resource.others:
             if body is None:
                 flask.abort(400)
