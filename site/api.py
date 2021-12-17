@@ -469,6 +469,29 @@ def build_connections_api(
     return bp
 
 
+def build_custom_api() -> flask.Blueprint:
+    """Build custom API endpoints."""
+
+    path = "/api"
+    bp = flask.Blueprint("api", __name__, url_prefix=path)
+
+    @bp.get("/users/")
+    @bp.post("/users/")
+    @bp.get("/users/<user>")
+    @bp.delete("/users/<user>")
+    @bp.get("/usernames/")
+    @bp.get("/usernames/<username>")
+    @bp.get("/clients/<clientId>/results/")
+    @bp.post("/clients/<clientId>/results/")
+    @bp.get("/clients/<clientId>/results/all")
+    @bp.get("/clients/<clientId>/results/<number>")
+    @bp.delete("/clients/<clientId>/results/<number>")
+    def _() -> None:
+        """Blank."""
+
+    return bp
+
+
 def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     """Register various API endpoints on the provided Flask app.
 
@@ -480,7 +503,7 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
 
     # TODO
     # Make result endpoints also modify Affects tables
-    # Make connections endpoints and custom endpoints
+    # Make custom endpoints
 
     mood = Resource("mood", ["name"])
 
