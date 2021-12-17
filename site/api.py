@@ -191,8 +191,8 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         "scent": "Bitter",
         "color": "Gray",
         "shape": "Line",
-        "media_genre": "Sad",
-        "music_genre": "Sad pop",
+        "media": "Sad",
+        "music": "Sad pop",
     }
 
     @app.route("/api/clients/<clientId>/results/all")
@@ -251,7 +251,7 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         except KeyError:
             flask.abort(404)
 
-    @app.route("/api/media_genres/")
+    @app.route("/api/medias/")
     def _media() -> flask.Response:
         """Query a client."""
         try:
@@ -259,7 +259,7 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         except KeyError:
             flask.abort(404)
 
-    @app.route("/api/music_genres/")
+    @app.route("/api/musics/")
     def _music() -> flask.Response:
         """Query a client."""
         try:
@@ -278,10 +278,10 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
         {"scent": "Woody", "mood": "Sad"},
     ]
     musicc = [
-        {"music_genre": "R & B", "mood": "Sad"},
+        {"music": "R & B", "mood": "Sad"},
     ]
     mediac = [
-        {"media_genre": "Fiction", "mood": "Sad"},
+        {"media": "Fiction", "mood": "Sad"},
     ]
 
     @app.route("/api/<q>_connections/")
@@ -306,7 +306,7 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
                 for con in shapec:
                     if con["mood"] == mood:
                         result.append(con)
-            elif q == "music_genres":
+            elif q == "musics":
                 for con in musicc:
                     if con["mood"] == mood:
                         result.append(con)
@@ -558,8 +558,8 @@ def build_custom_api() -> flask.Blueprint:
                 body["scent"],
                 body["color"],
                 body["shape"],
-                body["media_genre"],
-                body["music_genre"],
+                body["media"],
+                body["music"],
             )
         except KeyError:
             flask.abort(400)
