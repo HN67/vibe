@@ -30,7 +30,7 @@ def getuserinfo(username):
     resp = requests.get(api.api_url(p))
     # parse response
     user = resp.json()
-    p = "client/" + str(user["id"])
+    p = "clients/" + str(user["id"])
     resp = requests.get(api.api_url(p))
     userinfo = resp.json()
     return userinfo
@@ -185,7 +185,7 @@ def create_app() -> flask.Flask:
 
             print(client_result)
             requests.post(
-                api.api_url("client/" + str(userinfo["id"]) + "/results/"),
+                api.api_url("clients/" + str(userinfo["id"]) + "/results/"),
                 data=client_result,
             )
             ## --- end
@@ -225,7 +225,7 @@ def create_app() -> flask.Flask:
                 "displayName": displayname,
                 "bio": bio,
             }
-            requests.post(api.api_url("client/" + str(userinfo["id"])), data=data)
+            requests.post(api.api_url("clients/" + str(userinfo["id"])), data=data)
             return flask.redirect(flask.url_for("_profile", username=username))
         return flask.render_template(
             "editprofile.html", username=username, userinfo=userinfo
