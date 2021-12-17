@@ -478,18 +478,44 @@ def build_custom_api() -> flask.Blueprint:
     @bp.get("/users/")
     def _get_users() -> flask.Response:
         """Get all users."""
+        with get_db() as db:
+            return flask.jsonify(db.procedure("get_users").vertical())
 
     @bp.post("/users/")
     def _post_users() -> flask.Response:
         """Make a user."""
 
+        body = flask.request.json
+
+        if body is None:
+            flask.abort(400)
+
+        username = body["username"]
+
+        with get_db() as db:
+            result = db.procedure("post_user", (username,))
+
+        return flask.jsonify({"id": result.auto, "username": username})
+
     @bp.get("/users/<user>")
     def _get_user(user: int) -> flask.Response:
         """Get a single user."""
 
+        with get_db() as db:
+            result = db.procedure("get_user", (user,))
+
+        try:
+            return flask.jsonify(result.one())
+        except IndexError:
+            flask.abort(404)
+
     @bp.delete("/users/<user>")
     def _delete_user(user: int) -> flask.Response:
         """Delete a user."""
+
+        with get_db() as db:
+            db.procedure("delete_user", (user,))
+        return flask.jsonify({"id": user})
 
     @bp.get("/usernames/")
     def _get_usernames() -> flask.Response:
