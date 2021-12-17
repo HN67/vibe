@@ -103,13 +103,13 @@ Output: [{key_type}]
     URL: /api/{name}s/<{key_name}: {key_type}>
     Method: PUT
     Input: {{{input_list}}}
-    Output: {{{output_list}}}
+    Output: {{{key_name}: {key_type}}}
 
     Description: Delete a {name}
     URL: /api/{name}s/<{key_name}: {key_type}>
     Method: DELETE
     Input: None
-    Output: {{{output_list}}}
+    Output: {{{key_name}: {key_type}}}
 """
     if api_type == "qualia":
         foreign_name = "mood"
@@ -272,7 +272,7 @@ CREATE OR REPLACE PROCEDURE get_{this.name}affects()
 def main() -> None:
     """Main function."""
 
-    MODE = "procedures"
+    MODE = "api"
 
     if MODE == "api":
         raw_resources = list(read_raw(sys.stdin))

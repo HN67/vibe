@@ -8,10 +8,7 @@ Description: Create a user
 URL: /api/users/
 Method: POST
 Input: {"username": string}
-Output: {
-    "id": int,
-    "username": string,
-}
+Output: {"username": string}
 
     Description: Get information on a user
     URL: /api/users/<id: int>
@@ -26,10 +23,7 @@ Output: {
     URL: /api/users/<id: int>
     Method: DELETE
     Input: None
-    Output: {
-        "id": int,
-        "username": string,
-    }
+    Output: {"id": int}
 
 Description: Get list of usernames
 URL: /api/usernames/
@@ -64,17 +58,7 @@ Input: {
     "media_genre": string,
     "music_genre": string,
 }
-Output: {
-    "client": int,
-    "number": int,
-    "mood": string,
-    "taste": string,
-    "scent": string,
-    "color": string,
-    "shape": string,
-    "media_genre": string,
-    "music_genre": string,
-}
+Output: {"client": int}
 
     Description: Get information on a result for a client
     URL: /api/clients/<client: int>/results/<number: int>
@@ -115,11 +99,4 @@ Output: {
     Output: {
         "client": int,
         "number": int,
-        "mood": string,
-        "taste": string,
-        "scent": string,
-        "color": string,
-        "shape": string,
-        "media_genre": string,
-        "music_genre": string,
     }

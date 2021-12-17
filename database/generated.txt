@@ -16,17 +16,13 @@ Output: [string]
     URL: /api/moods/<name: string>
     Method: PUT
     Input: {}
-    Output: {
-        "name": string,
-    }
+    Output: {name: string}
 
     Description: Delete a mood
     URL: /api/moods/<name: string>
     Method: DELETE
     Input: None
-    Output: {
-        "name": string,
-    }
+    Output: {name: string}
 
 Description: Get list of tastes
 URL: /api/tastes/
@@ -46,17 +42,13 @@ Output: [string]
     URL: /api/tastes/<type: string>
     Method: PUT
     Input: {}
-    Output: {
-        "type": string,
-    }
+    Output: {type: string}
 
     Description: Delete a taste
     URL: /api/tastes/<type: string>
     Method: DELETE
     Input: None
-    Output: {
-        "type": string,
-    }
+    Output: {type: string}
 
 Description: Query connections of a taste
 URL: /api/tastes_connections
@@ -97,19 +89,13 @@ Output: [string]
     Input: {
         "family": string,
     }
-    Output: {
-        "name": string,
-        "family": string,
-    }
+    Output: {name: string}
 
     Description: Delete a scent
     URL: /api/scents/<name: string>
     Method: DELETE
     Input: None
-    Output: {
-        "name": string,
-        "family": string,
-    }
+    Output: {name: string}
 
 Description: Query connections of a scent
 URL: /api/scents_connections
@@ -154,23 +140,13 @@ Output: [string]
         "saturation": int,
         "brightness": int,
     }
-    Output: {
-        "name": string,
-        "hue": int,
-        "saturation": int,
-        "brightness": int,
-    }
+    Output: {name: string}
 
     Description: Delete a color
     URL: /api/colors/<name: string>
     Method: DELETE
     Input: None
-    Output: {
-        "name": string,
-        "hue": int,
-        "saturation": int,
-        "brightness": int,
-    }
+    Output: {name: string}
 
 Description: Query connections of a color
 URL: /api/colors_connections
@@ -211,19 +187,13 @@ Output: [string]
     Input: {
         "sides": int,
     }
-    Output: {
-        "name": string,
-        "sides": int,
-    }
+    Output: {name: string}
 
     Description: Delete a shape
     URL: /api/shapes/<name: string>
     Method: DELETE
     Input: None
-    Output: {
-        "name": string,
-        "sides": int,
-    }
+    Output: {name: string}
 
 Description: Query connections of a shape
 URL: /api/shapes_connections
@@ -261,17 +231,13 @@ Output: [string]
     URL: /api/media_genres/<name: string>
     Method: PUT
     Input: {}
-    Output: {
-        "name": string,
-    }
+    Output: {name: string}
 
     Description: Delete a media_genre
     URL: /api/media_genres/<name: string>
     Method: DELETE
     Input: None
-    Output: {
-        "name": string,
-    }
+    Output: {name: string}
 
 Description: Query connections of a media_genre
 URL: /api/media_genres_connections
@@ -309,17 +275,13 @@ Output: [string]
     URL: /api/music_genres/<name: string>
     Method: PUT
     Input: {}
-    Output: {
-        "name": string,
-    }
+    Output: {name: string}
 
     Description: Delete a music_genre
     URL: /api/music_genres/<name: string>
     Method: DELETE
     Input: None
-    Output: {
-        "name": string,
-    }
+    Output: {name: string}
 
 Description: Query connections of a music_genre
 URL: /api/music_genres_connections
@@ -360,19 +322,13 @@ Output: [int]
     Input: {
         "permissions": int,
     }
-    Output: {
-        "id": int,
-        "permissions": int,
-    }
+    Output: {id: int}
 
     Description: Delete a admin
     URL: /api/admins/<id: int>
     Method: DELETE
     Input: None
-    Output: {
-        "id": int,
-        "permissions": int,
-    }
+    Output: {id: int}
 
 Description: Get list of clients
 URL: /api/clients/
@@ -401,23 +357,11 @@ Output: [int]
         "displayName": string,
         "bio": string,
     }
-    Output: {
-        "id": int,
-        "birthday": date,
-        "email": string,
-        "displayName": string,
-        "bio": string,
-    }
+    Output: {id: int}
 
     Description: Delete a client
     URL: /api/clients/<id: int>
     Method: DELETE
     Input: None
-    Output: {
-        "id": int,
-        "birthday": date,
-        "email": string,
-        "displayName": string,
-        "bio": string,
-    }
+    Output: {id: int}
 
