@@ -412,7 +412,7 @@ def build_connections_api(
     path = f"/api/{resource.name}s_connections"
     bp = flask.Blueprint(f"{resource.name}s_connections", __name__, url_prefix=path)
 
-    @bp.get("/")
+    @bp.get("")
     def _connections() -> flask.Response:
         """Query connections."""
         local_value = flask.request.args.get(resource.name)
@@ -432,7 +432,7 @@ def build_connections_api(
 
         return flask.jsonify(result.all())
 
-    @bp.post("/")
+    @bp.post("")
     def _post_connection() -> flask.Response:
         """Put a connection."""
 
@@ -449,7 +449,7 @@ def build_connections_api(
 
         return flask.jsonify({resource.name: local_value, other.name: other_value})
 
-    @bp.delete("/")
+    @bp.delete("")
     def _delete_connection() -> flask.Response:
         """Delete a connection."""
 
