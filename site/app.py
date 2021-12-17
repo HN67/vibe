@@ -176,9 +176,8 @@ def create_app() -> flask.Flask:
                 client_result[q] = selected
 
             # now we put the result in the database for the client using the API
-            try:
-                username = flask.request.form["username"]
-            except KeyError:
+            username = flask.request.form["username"]
+            if not username:
                 return flask.redirect(flask.url_for("_quiz"))
 
             # check if they are a new user. if they are, makes a new, empty profile
