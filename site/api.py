@@ -556,6 +556,7 @@ def build_custom_api() -> flask.Blueprint:
                 body["mood"],
                 body["taste"],
                 body["scent"],
+                body["color"],
                 body["shape"],
                 body["media_genre"],
                 body["music_genre"],
