@@ -69,13 +69,13 @@ def getconnections(q, m):
 
 
 def makeconnection(q, m, s):
-    requests.post(api.api_url(q + "_connections"), params={q: s, "mood": m})
+    requests.post(api.api_url(q + "_connections"), json={q: s, "mood": m})
     # parse response
     return
 
 
 def newuser(username):
-    requests.post(api.api_url("users/"), data={"username": username})
+    requests.post(api.api_url("users/"), json={"username": username})
     newuser = requests.get(api.api_url("usernames/" + username))
     # make a new, empty profile
     newuserdata = {
@@ -84,7 +84,7 @@ def newuser(username):
         "displayName": "",
         "bio": "",
     }
-    requests.put(api.api_url("clients/" + newuser["id"]), data=newuserdata)
+    requests.put(api.api_url("clients/" + newuser["id"]), json=newuserdata)
     return
 
 
@@ -189,7 +189,7 @@ def create_app() -> flask.Flask:
             print(client_result)
             requests.post(
                 api.api_url("clients/" + str(userinfo["id"]) + "/results/"),
-                data=client_result,
+                json=client_result,
             )
             ## --- end
 
@@ -229,7 +229,7 @@ def create_app() -> flask.Flask:
                 "bio": bio,
             }
             logger.info("Sending data %s", data)
-            requests.put(api.api_url("clients/" + str(userinfo["id"])), data=data)
+            requests.put(api.api_url("clients/" + str(userinfo["id"])), json=data)
             return flask.redirect(flask.url_for("_profile", username=username))
         return flask.render_template(
             "editprofile.html", username=username, userinfo=userinfo
