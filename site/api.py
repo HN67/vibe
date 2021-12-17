@@ -222,13 +222,6 @@ def build_resource_api(
     @bp.put(specific_path)
     def _put(key: str) -> flask.Response:
         """Put a resource."""
-        # Verify admin permissions
-        admin = flask.request.headers.get("Admin", default=None, type=int)
-        if admin is None:
-            flask.abort(403)
-        perms = get_admin(admin)
-        if perms is None or not perms.create:
-            flask.abort(403)
 
         body = flask.request.json
         logging.info("Put endpoint received data: %s", body)
