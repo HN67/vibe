@@ -340,11 +340,16 @@ class Resource:
         return self.attrs[0]
 
 
-def build_resource_api(resource: Resource) -> flask.Blueprint:
+def build_resource_api(
+    resource: Resource, alt: t.Optional[str] = None
+) -> flask.Blueprint:
     """Automatically build and register endpoints for a resource on a bluepint.
 
     Assumes the existence of certain stored procedures.
     """
+
+    if alt is None:
+        alt = resource.name
 
     path = f"/api/{resource.name}s"
     specific_path = "/<key>"
@@ -356,13 +361,13 @@ def build_resource_api(resource: Resource) -> flask.Blueprint:
         """Query list of resources."""
         with get_db() as db:
             # return flask.jsonify([mood for (mood,) in db.procedure("get_moods").rows])
-            return flask.jsonify(db.procedure(f"get_{resource.name}s").vertical())
+            return flask.jsonify(db.procedure(f"get_{alt}s").vertical())
 
     @bp.get(specific_path)
     def _get(key: str) -> flask.Response:
         """Query a resource."""
         with get_db() as db:
-            result = db.procedure(f"get_{resource.name}", (key,))
+            result = db.procedure(f"get_{alt}", (key,))
             try:
                 return flask.jsonify(result.one())
             except IndexError:
@@ -376,54 +381,85 @@ def build_resource_api(resource: Resource) -> flask.Blueprint:
             flask.abort(400)
         parameters = tuple([key] + [body[attr] for attr in resource.others])
         with get_db() as db:
-            db.procedure(f"put_{resource.name}", parameters)
+            db.procedure(f"put_{alt}", parameters)
         return flask.jsonify({resource.key: key})
 
     @bp.delete(specific_path)
     def _delete(key: str) -> flask.Response:
         """Delete a resource."""
         with get_db() as db:
-            db.procedure(f"delete_{resource.name}", (key,))
+            db.procedure(f"delete_{alt}", (key,))
         return flask.jsonify({resource.key: key})
 
     return bp
 
 
-def build_connections_api(resource: Resource, other: Resource) -> flask.Blueprint:
+def build_connections_api(
+    resource: Resource,
+    other: Resource,
+    alt: t.Optional[str] = None,
+) -> flask.Blueprint:
     """Build a blueprint for a connections API between two resources."""
+
+    if alt is None:
+        alt = resource.name
 
     path = f"/api/{resource.name}s_connections"
     bp = flask.Blueprint(f"{resource.name}s_connections", __name__, url_prefix=path)
 
-    # Description: Query connections of a color
-    # URL: /api/colors_connections
-    # Method: GET
-    # Input: {"color": Optional[string], "mood": Optional[string]}
-    # Output: [{"color": string, "mood": string}]
-
-    #     Description: Create a connection with a color
-    #     URL: /api/colors_connections
-    #     Method: POST
-    #     Input: {"color": string, "mood": string}
-    #     Output: {"color": string, "mood": string}
-
-    #     Description: Delete a connection with a color
-    #     URL: /api/colors_connections
-    #     Method: DELETE
-    #     Input: {"color": string, "mood": string}
-    #     Output: {"color": string, "mood": string}
-
     @bp.get("/")
     def _connections() -> flask.Response:
         """Query connections."""
+        local_value = flask.request.args.get(resource.name)
+        other_value = flask.request.args.get(other.name)
 
-    @bp.put("/")
-    def _put_connection() -> flask.Response:
+        with get_db() as db:
+            if local_value and other_value:
+                result = db.procedure(
+                    f"get_{alt}affects_{alt}_{other.name}", (local_value, other_value)
+                )
+            elif local_value:
+                result = db.procedure(f"get_{alt}affects_{alt}", (local_value,))
+            elif other_value:
+                result = db.procedure(f"get_{alt}affects_{other.name}", (other_value,))
+            else:
+                result = db.procedure(f"get_{alt}affects")
+
+        return flask.jsonify(result.all())
+
+    @bp.post("/")
+    def _post_connection() -> flask.Response:
         """Put a connection."""
+
+        data = flask.request.json
+
+        if data is None:
+            flask.abort(400)
+
+        local_value = data[resource.name]
+        other_value = data[other.name]
+
+        with get_db() as db:
+            db.procedure(f"put_{alt}affects", (local_value, other_value))
+
+        return flask.jsonify({resource.name: local_value, other.name: other_value})
 
     @bp.delete("/")
     def _delete_connection() -> flask.Response:
         """Delete a connection."""
+
+        data = flask.request.json
+
+        if data is None:
+            flask.abort(400)
+
+        local_value = data[resource.name]
+        other_value = data[other.name]
+
+        with get_db() as db:
+            db.procedure(f"delete_{alt}affects", (local_value, other_value))
+
+        return flask.jsonify({resource.name: local_value, other.name: other_value})
 
     return bp
 
@@ -441,19 +477,41 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     # Make result endpoints also modify Affects tables
     # Make connections endpoints and custom endpoints
 
-    resources = [
-        Resource("mood", ["name"]),
-        Resource("taste", ["type"]),
-        Resource("scent", ["name", "family"]),
-        Resource("shape", ["name", "sides"]),
-        Resource("color", ["name", "hue", "saturation", "brightness"]),
-        Resource("musicgenre", ["name"]),
-        Resource("mediagenre", ["name"]),
-        Resource("admin", ["id", "permissions"]),
-        Resource("client", ["id", "birthday", "email", "displayName", "bio"]),
+    mood = Resource("mood", ["name"])
+
+    simple_resources: t.List[t.Tuple[Resource, t.Optional[str]]] = [
+        (Resource("taste", ["type"]), None),
+        (Resource("scent", ["name", "family"]), None),
+        (Resource("shape", ["name", "sides"]), None),
+        (Resource("color", ["name", "hue", "saturation", "brightness"]), None),
     ]
 
-    for resource in resources:
-        app.register_blueprint(build_resource_api(resource))
+    # neccesary for explicit typing
+    mood_pair: t.List[t.Tuple[Resource, t.Optional[str]]] = [(mood, None)]
+
+    resources: t.List[t.Tuple[Resource, t.Optional[str]]] = (
+        mood_pair
+        + simple_resources
+        + [
+            (Resource("music_genre", ["name"]), "musicgenre"),
+            (Resource("media_genre", ["name"]), "mediagenre"),
+            (Resource("admin", ["id", "permissions"]), None),
+            (
+                Resource("client", ["id", "birthday", "email", "displayName", "bio"]),
+                None,
+            ),
+        ]
+    )
+
+    qualia: t.List[t.Tuple[Resource, t.Optional[str]]] = simple_resources + [
+        (Resource("music_genre", ["name"]), "music"),
+        (Resource("media_genre", ["name"]), "media"),
+    ]
+
+    for resource, alt in resources:
+        app.register_blueprint(build_resource_api(resource, alt))
+
+    for resource, alt in qualia:
+        app.register_blueprint(build_connections_api(resource, mood, alt))
 
     return app
