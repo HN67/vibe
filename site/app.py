@@ -76,10 +76,10 @@ def makeconnection(q, m, s):
 
 def newuser(username):
     requests.post(api.api_url("users/"), json={"username": username})
-    newuser = requests.get(api.api_url("usernames/" + username))
+    newuser = requests.get(api.api_url("usernames/" + username)).json()
     # make a new, empty profile
     newuserdata = {
-        "birthday": None,
+        "birthday": "",
         "email": "",
         "displayName": "",
         "bio": "",
