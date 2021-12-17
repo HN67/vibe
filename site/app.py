@@ -225,7 +225,7 @@ def create_app() -> flask.Flask:
                 "displayName": displayname,
                 "bio": bio,
             }
-            requests.post(api.api_url("clients/" + str(userinfo["id"])), data=data)
+            requests.put(api.api_url("clients/" + str(userinfo["id"])), data=data)
             return flask.redirect(flask.url_for("_profile", username=username))
         return flask.render_template(
             "editprofile.html", username=username, userinfo=userinfo
