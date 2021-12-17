@@ -71,6 +71,20 @@ def makeconnection(q, m, s):
     return
 
 
+def newuser(username):
+    requests.post(api.api_url("users/"), data={"username": username})
+    newuser = requests.get(api.api_url("usernames/" + username))
+    # make a new, empty profile
+    newuserdata = {
+        "birthday": None,
+        "email": "",
+        "displayName": "",
+        "bio": "",
+    }
+    requests.put(api.api_url("clients/" + newuser["id"]), data=newuserdata)
+    return
+
+
 def create_app() -> flask.Flask:
     """Create the Flask instance."""
 
@@ -98,9 +112,15 @@ def create_app() -> flask.Flask:
     def _login():
         error = None
         if flask.request.method == "POST":
-            return flask.redirect(
-                flask.url_for("_profile", username=flask.request.form["username"])
-            )
+            username = flask.request.form["username"]
+
+            # check if they are a new user. if they are, makes a new, empty profile
+            try:
+                requests.get(api.api_url("usernames/" + username))
+            except:
+                newuser(username)
+
+            return flask.redirect(flask.url_for("_profile", username=username))
         return flask.render_template("login.html", error=error)
 
     @app.route("/quiz", methods=["GET", "POST"])
@@ -117,22 +137,19 @@ def create_app() -> flask.Flask:
                 "media_genre": "",
                 "music_genre": "",
             }
-            username = flask.request.form["username"]
-            print(username)
+
             # get their mood
             try:
                 selected_mood = flask.request.form["mood"]
-            # if they didn't cooperate just send them back to their profile like a loser
+            # if they didn't cooperate just send them back to the quiz like a loser
             except:
-                return flask.redirect(
-                    flask.url_for("_profile", username=flask.request.form["username"])
-                )
+                return flask.redirect(flask.url_for("_quiz"))
             # if they did cooperate then update their result
             client_result["mood"] = selected_mood
 
             print("mood: " + client_result["mood"])
 
-            # use result to fill in anything missing
+            # fill in the rest of the result
             for q in [
                 "color",
                 "scent",
@@ -158,12 +175,21 @@ def create_app() -> flask.Flask:
 
             # now we put the result in the database for the client using the API
             username = flask.request.form["username"]
+
+            # check if they are a new user. if they are, makes a new, empty profile
+            try:
+                requests.get(api.api_url("usernames/" + username))
+            except:
+                newuser(username)
+
+            # now there is a user id to get B)
             userinfo = getuserinfo(username)
+
             print(client_result)
-            # requests.post(
-            #     api_url("client/" + str(userinfo["id"]) + "/results/"),
-            #     params=flask.jsonify(client_result),
-            # )
+            requests.post(
+                api.api_url("client/" + str(userinfo["id"]) + "/results/"),
+                data=client_result,
+            )
             ## --- end
 
             return flask.redirect(flask.url_for("_profile", username=username))
@@ -201,9 +227,7 @@ def create_app() -> flask.Flask:
                 "displayName": displayname,
                 "bio": bio,
             }
-            # requests.post(
-            #     api.api_url("client/" + str(userinfo["id"])), data=flask.jasonify(data)
-            # )
+            requests.post(api.api_url("client/" + str(userinfo["id"])), data=data)
             return flask.redirect(flask.url_for("_profile", username=username))
         return flask.render_template(
             "editprofile.html", username=username, userinfo=userinfo
