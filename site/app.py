@@ -215,7 +215,7 @@ def create_app() -> flask.Flask:
         userinfo = getuserinfo(username)
         if flask.request.method == "POST":
             bio = currentinfo("bio", userinfo)
-            displayname = currentinfo("name", userinfo)
+            displayname = currentinfo("displayName", userinfo)
 
             email = currentinfo("email", userinfo)
             birthday = currentinfo("birthday", userinfo)
