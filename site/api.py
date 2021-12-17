@@ -165,6 +165,27 @@ class Resource:
         return self.attrs[0]
 
 
+@dataclasses.dataclass()
+class Permissions:
+    """Denote the permissions of an admin."""
+
+    create: bool
+    delete: bool
+
+
+def get_admin(admin: int) -> t.Optional[Permissions]:
+    """Retrieve the permissions of an admin."""
+    with get_db() as db:
+        result = db.procedure("get_admin", (admin,)).one()
+        if result is None:
+            return None
+        perm_int = result["permissions"]
+        return Permissions(
+            perm_int & 0b10,
+            perm_int & 0b01,
+        )
+
+
 def build_resource_api(
     resource: Resource, alt: t.Optional[str] = None
 ) -> flask.Blueprint:
@@ -201,6 +222,14 @@ def build_resource_api(
     @bp.put(specific_path)
     def _put(key: str) -> flask.Response:
         """Put a resource."""
+        # Verify admin permissions
+        admin = flask.request.headers.get("Admin", default=None, type=int)
+        if admin is None:
+            flask.abort(403)
+        perms = get_admin(admin)
+        if perms is None or not perms.create:
+            flask.abort(403)
+
         body = flask.request.json
         logging.info("Put endpoint received data: %s", body)
         if resource.others:
@@ -218,6 +247,14 @@ def build_resource_api(
     @bp.delete(specific_path)
     def _delete(key: str) -> flask.Response:
         """Delete a resource."""
+        # Verify admin permissions
+        admin = flask.request.headers.get("Admin", default=None, type=int)
+        if admin is None:
+            flask.abort(403)
+        perms = get_admin(admin)
+        if perms is None or not perms.delete:
+            flask.abort(403)
+
         with get_db() as db:
             db.procedure(f"delete_{alt}", (key,))
         return flask.jsonify({resource.key: key})
@@ -280,6 +317,14 @@ def build_connections_api(
     @bp.delete("")
     def _delete_connection() -> flask.Response:
         """Delete a connection."""
+
+        # Verify admin permissions
+        admin = flask.request.headers.get("Admin", default=None, type=int)
+        if admin is None:
+            flask.abort(403)
+        perms = get_admin(admin)
+        if perms is None or not perms.delete:
+            flask.abort(403)
 
         data = flask.request.json
 
@@ -425,8 +470,6 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
 
     Returns the app (which has had more routes registered).
     """
-
-    # TODO authenticate modification endpoints
 
     if mock:
         return build_api_mock(app)

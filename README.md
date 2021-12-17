@@ -44,9 +44,20 @@ port=3306
 database="vibe"
 ```
 
-### Example
+### API Usage
 
-An example/base Flask app is entirely contained in `site/app.py`.
+API endpoints can be used as described in `api.txt`.
+
+Inputs to GET requests take the form of parameters,
+and inputs to other requests take the form of a JSON body.
+
+All requests return a JSON body as output.
+
+Any non-site (e.g. qualia) modification endpoints
+require an admin ID to be given as the header `Admin`.
+An admin has an associated permissions number,
+which is a two bit number where each bit
+indicates their ability to create and delete respectively.
 
 ## MariaDB Database
 
