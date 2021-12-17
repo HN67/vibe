@@ -377,13 +377,14 @@ def build_resource_api(
     def _put(key: str) -> flask.Response:
         """Put a resource."""
         body = flask.request.json
-        if body is None:
-            flask.abort(400)
-        parameters = (
-            tuple([key] + [body[attr] for attr in resource.others])
-            if resource.others
-            else None
-        )
+        if resource.others:
+            if body is None:
+                flask.abort(400)
+            parameters: t.Optional[t.Tuple[t.Any, ...]] = tuple(
+                [key] + [body[attr] for attr in resource.others]
+            )
+        else:
+            parameters = None
         with get_db() as db:
             db.procedure(f"put_{alt}", parameters)
         return flask.jsonify({resource.key: key})
