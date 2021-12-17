@@ -272,7 +272,7 @@ CREATE OR REPLACE PROCEDURE get_{this.name}affects()
 def main() -> None:
     """Main function."""
 
-    MODE = "api"
+    MODE = "procedures"
 
     if MODE == "api":
         raw_resources = list(read_raw(sys.stdin))

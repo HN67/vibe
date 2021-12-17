@@ -213,93 +213,93 @@ Output: [{"shape": string, "mood": string}]
     Input: {"shape": string, "mood": string}
     Output: {"shape": string, "mood": string}
 
-Description: Get list of media_genres
-URL: /api/media_genres/
+Description: Get list of medias
+URL: /api/medias/
 Method: GET
 Input: None
 Output: [string]
 
-    Description: Get information on a media_genre
-    URL: /api/media_genres/<name: string>
+    Description: Get information on a media
+    URL: /api/medias/<name: string>
     Method: GET
     Input: None
     Output: {
         "name": string,
     }
 
-    Description: Create / update a media_genre
-    URL: /api/media_genres/<name: string>
+    Description: Create / update a media
+    URL: /api/medias/<name: string>
     Method: PUT
     Input: {}
     Output: {name: string}
 
-    Description: Delete a media_genre
-    URL: /api/media_genres/<name: string>
+    Description: Delete a media
+    URL: /api/medias/<name: string>
     Method: DELETE
     Input: None
     Output: {name: string}
 
-Description: Query connections of a media_genre
-URL: /api/media_genres_connections
+Description: Query connections of a media
+URL: /api/medias_connections
 Method: GET
-Input: {"media_genre": Optional[string], "mood": Optional[string]}
-Output: [{"media_genre": string, "mood": string}]
+Input: {"media": Optional[string], "mood": Optional[string]}
+Output: [{"media": string, "mood": string}]
 
-    Description: Create a connection with a media_genre
-    URL: /api/media_genres_connections
+    Description: Create a connection with a media
+    URL: /api/medias_connections
     Method: POST
-    Input: {"media_genre": string, "mood": string}
-    Output: {"media_genre": string, "mood": string}
+    Input: {"media": string, "mood": string}
+    Output: {"media": string, "mood": string}
 
-    Description: Delete a connection with a media_genre
-    URL: /api/media_genres_connections
+    Description: Delete a connection with a media
+    URL: /api/medias_connections
     Method: DELETE
-    Input: {"media_genre": string, "mood": string}
-    Output: {"media_genre": string, "mood": string}
+    Input: {"media": string, "mood": string}
+    Output: {"media": string, "mood": string}
 
-Description: Get list of music_genres
-URL: /api/music_genres/
+Description: Get list of musics
+URL: /api/musics/
 Method: GET
 Input: None
 Output: [string]
 
-    Description: Get information on a music_genre
-    URL: /api/music_genres/<name: string>
+    Description: Get information on a music
+    URL: /api/musics/<name: string>
     Method: GET
     Input: None
     Output: {
         "name": string,
     }
 
-    Description: Create / update a music_genre
-    URL: /api/music_genres/<name: string>
+    Description: Create / update a music
+    URL: /api/musics/<name: string>
     Method: PUT
     Input: {}
     Output: {name: string}
 
-    Description: Delete a music_genre
-    URL: /api/music_genres/<name: string>
+    Description: Delete a music
+    URL: /api/musics/<name: string>
     Method: DELETE
     Input: None
     Output: {name: string}
 
-Description: Query connections of a music_genre
-URL: /api/music_genres_connections
+Description: Query connections of a music
+URL: /api/musics_connections
 Method: GET
-Input: {"music_genre": Optional[string], "mood": Optional[string]}
-Output: [{"music_genre": string, "mood": string}]
+Input: {"music": Optional[string], "mood": Optional[string]}
+Output: [{"music": string, "mood": string}]
 
-    Description: Create a connection with a music_genre
-    URL: /api/music_genres_connections
+    Description: Create a connection with a music
+    URL: /api/musics_connections
     Method: POST
-    Input: {"music_genre": string, "mood": string}
-    Output: {"music_genre": string, "mood": string}
+    Input: {"music": string, "mood": string}
+    Output: {"music": string, "mood": string}
 
-    Description: Delete a connection with a music_genre
-    URL: /api/music_genres_connections
+    Description: Delete a connection with a music
+    URL: /api/musics_connections
     Method: DELETE
-    Input: {"music_genre": string, "mood": string}
-    Output: {"music_genre": string, "mood": string}
+    Input: {"music": string, "mood": string}
+    Output: {"music": string, "mood": string}
 
 Description: Get list of admins
 URL: /api/admins/
@@ -422,8 +422,8 @@ Input: {
     "scent": string,
     "color": string,
     "shape": string,
-    "media_genre": string,
-    "music_genre": string,
+    "media": string,
+    "music": string,
 }
 Output: {"client": int}
 
@@ -439,8 +439,8 @@ Output: {"client": int}
         "scent": string,
         "color": string,
         "shape": string,
-        "media_genre": string,
-        "music_genre": string,
+        "media": string,
+        "music": string,
     }
 
     Description: Get all results for a client
@@ -455,8 +455,8 @@ Output: {"client": int}
         "scent": string,
         "color": string,
         "shape": string,
-        "media_genre": string,
-        "music_genre": string,
+        "media": string,
+        "music": string,
     }]
 
     Description: Delete a result for a client

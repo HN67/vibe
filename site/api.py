@@ -144,180 +144,6 @@ def build_api_mock(app: flask.Flask) -> flask.Flask:
     Returns the app (which has had more routes registered).
     """
 
-    # Usernames mock
-    known = {"alpha": 1, "beta": 2, "gamma": 3}
-    someuser = {
-        "id": 1,
-        "birthday": "MM/DD/YYYY",
-        "email": "alpha@gmail.com",
-        "displayName": "a",
-        "bio": "bla bla bla",
-    }
-
-    @app.route("/api/usernames")
-    def _usernames() -> flask.Response:
-        """Query a list of usernames."""
-        return flask.jsonify(list(known.keys()))
-
-    @app.route("/api/usernames/<username>")
-    def _username(username: str) -> flask.Response:
-        """Query a username."""
-        try:
-            return flask.jsonify({"id": known[username], "username": username})
-        except KeyError:
-            flask.abort(404)
-
-    @app.route("/api/client/<clientId>")
-    def _client(clientId: str) -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(
-                {
-                    "id": clientId,
-                    "birthday": someuser["birthday"],
-                    "email": someuser["email"],
-                    "displayName": someuser["displayName"],
-                    "bio": someuser["bio"],
-                }
-            )
-        except KeyError:
-            flask.abort(404)
-
-    someresult = {
-        "client": 1,
-        "number": 1,
-        "mood": "Sad",
-        "taste": "Sour",
-        "scent": "Bitter",
-        "color": "Gray",
-        "shape": "Line",
-        "media_genre": "Sad",
-        "music_genre": "Sad pop",
-    }
-
-    @app.route("/api/clients/<clientId>/results/all")
-    def _results(clientId: str) -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify([someresult, someresult])
-        except KeyError:
-            flask.abort(404)
-
-    moods = [{"name": "Sad"}, {"name": "Happy"}, {"name": "Angry"}]
-    colors = [{"name": "Red"}, {"name": "Blue"}, {"name": "Pink"}]
-    shapes = [{"name": "Triangle"}, {"name": "Circle"}, {"name": "Line"}]
-    tastes = [{"type": "Bitter"}, {"type": "Sweet"}, {"type": "Sour"}]
-    scents = [{"name": "Floral"}, {"name": "Woody"}, {"name": "Fresh"}]
-    media = [{"name": "Fiction"}, {"name": "Action"}, {"name": "Horror"}]
-    music = [{"name": "Pop"}, {"name": "R & B"}, {"name": "Rap"}]
-
-    @app.route("/api/moods/")
-    def _moods() -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(moods)
-        except KeyError:
-            flask.abort(404)
-
-    @app.route("/api/colors/")
-    def _colors() -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(colors)
-        except KeyError:
-            flask.abort(404)
-
-    @app.route("/api/shapes/")
-    def _shapes() -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(shapes)
-        except KeyError:
-            flask.abort(404)
-
-    @app.route("/api/scents/")
-    def _scents() -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(scents)
-        except KeyError:
-            flask.abort(404)
-
-    @app.route("/api/tastes/")
-    def _tastes() -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(tastes)
-        except KeyError:
-            flask.abort(404)
-
-    @app.route("/api/media_genres/")
-    def _media() -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(media)
-        except KeyError:
-            flask.abort(404)
-
-    @app.route("/api/music_genres/")
-    def _music() -> flask.Response:
-        """Query a client."""
-        try:
-            return flask.jsonify(music)
-        except KeyError:
-            flask.abort(404)
-
-    tc = [{"taste": "Bitter", "mood": "Sad"}, {"tastes": "Sweet", "mood": "happy"}]
-    cc = [
-        {"color": "Red", "mood": "Sad"},
-    ]
-    shapec = [
-        {"shape": "Circle", "mood": "Sad"},
-    ]
-    scentc = [
-        {"scent": "Woody", "mood": "Sad"},
-    ]
-    musicc = [
-        {"music_genre": "R & B", "mood": "Sad"},
-    ]
-    mediac = [
-        {"media_genre": "Fiction", "mood": "Sad"},
-    ]
-
-    @app.route("/api/<q>_connections/")
-    def _connection(q) -> flask.Response:
-        """Query a client."""
-        try:
-            mood = flask.request.args.get("mood")
-            result = []
-            if q == "tastes":
-                for con in tc:
-                    if con["mood"] == mood:
-                        result.append(con)
-            elif q == "colors":
-                for con in cc:
-                    if con["mood"] == mood:
-                        result.append(con)
-            elif q == "scents":
-                for con in scentc:
-                    if con["mood"] == mood:
-                        result.append(con)
-            elif q == "shapes":
-                for con in shapec:
-                    if con["mood"] == mood:
-                        result.append(con)
-            elif q == "music_genres":
-                for con in musicc:
-                    if con["mood"] == mood:
-                        result.append(con)
-            else:
-                for con in mediac:
-                    if con["mood"] == mood:
-                        result.append(con)
-            return flask.jsonify(result)
-        except KeyError:
-            flask.abort(404)
-
     return app
 
 
@@ -370,12 +196,13 @@ def build_resource_api(
             packet = result.one()
             if packet is None:
                 flask.abort(404)
-            return flask.jsonify(result.one())
+            return flask.jsonify(packet)
 
     @bp.put(specific_path)
     def _put(key: str) -> flask.Response:
         """Put a resource."""
         body = flask.request.json
+        logging.info("Put endpoint received data: %s", body)
         if resource.others:
             if body is None:
                 flask.abort(400)
@@ -439,6 +266,8 @@ def build_connections_api(
 
         if data is None:
             flask.abort(400)
+
+        logger.info("Received data: %s", data)
 
         local_value = data[resource.name]
         other_value = data[other.name]
@@ -528,10 +357,10 @@ def build_custom_api() -> flask.Blueprint:
         """Get a user for a username."""
 
         with get_db() as db:
-            packet = db.procedure("get_username", (username,))
+            packet = db.procedure("get_username", (username,)).one()
         if packet is None:
             flask.abort(404)
-        return flask.jsonify(packet.one())
+        return flask.jsonify(packet)
 
     @bp.get("/clients/<clientId>/results/")
     def _get_results(clientId: int) -> flask.Response:
@@ -557,8 +386,8 @@ def build_custom_api() -> flask.Blueprint:
                 body["scent"],
                 body["color"],
                 body["shape"],
-                body["media_genre"],
-                body["music_genre"],
+                body["media"],
+                body["music"],
             )
         except KeyError:
             flask.abort(400)
@@ -597,6 +426,8 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     Returns the app (which has had more routes registered).
     """
 
+    # TODO authenticate modification endpoints
+
     if mock:
         return build_api_mock(app)
 
@@ -616,8 +447,8 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
         mood_pair
         + simple_resources
         + [
-            (Resource("music_genre", ["name"]), "musicgenre"),
-            (Resource("media_genre", ["name"]), "mediagenre"),
+            (Resource("music", ["name"]), "musicgenre"),
+            (Resource("media", ["name"]), "mediagenre"),
             (Resource("admin", ["id", "permissions"]), None),
             (
                 Resource("client", ["id", "birthday", "email", "displayName", "bio"]),
@@ -627,8 +458,8 @@ def build_api(app: flask.Flask, mock: bool = False) -> flask.Flask:
     )
 
     qualia: t.List[t.Tuple[Resource, t.Optional[str]]] = simple_resources + [
-        (Resource("music_genre", ["name"]), "music"),
-        (Resource("media_genre", ["name"]), "media"),
+        (Resource("music", ["name"]), "music"),
+        (Resource("media", ["name"]), "media"),
     ]
 
     for resource, alt in resources:

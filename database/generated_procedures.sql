@@ -683,7 +683,7 @@ CREATE OR REPLACE PROCEDURE get_client(IN id INT)
     END;
 //
 
-CREATE OR REPLACE PROCEDURE put_client(IN id INT, IN birthday DATE, IN email NVARCHAR(255), IN displayName NVARCHAR(255), IN bio NVARCHAR(255))
+CREATE OR REPLACE PROCEDURE put_client(IN id INT, IN birthday NVARCHAR(255), IN email NVARCHAR(255), IN displayName NVARCHAR(255), IN bio NVARCHAR(255))
     MODIFIES SQL DATA
     BEGIN
         INSERT INTO Client (id, birthday, email, displayName, bio)

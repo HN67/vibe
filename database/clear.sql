@@ -1,0 +1,24 @@
+USE vibe;
+
+DELETE FROM TasteAffects;
+DELETE FROM ScentAffects;
+DELETE FROM ShapeAffects;
+DELETE FROM ColorAffects;
+DELETE FROM MediaAffects;
+DELETE FROM MusicAffects;
+
+DELETE FROM Result;
+
+DELETE FROM Admin;
+DELETE FROM Client;
+
+DELETE FROM User;
+
+DELETE FROM Taste;
+DELETE FROM Scent;
+DELETE FROM Shape;
+DELETE FROM Color;
+DELETE FROM MediaGenre;
+DELETE FROM MusicGenre;
+
+DELETE FROM Mood;

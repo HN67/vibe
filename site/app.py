@@ -9,10 +9,13 @@ from requests.api import get, request
 
 import api
 
+logger = logging.getLogger(__name__)
+logger.addHandler(logging.NullHandler())
+
 root_logger = logging.getLogger()
 
 FORMAT_STRING = "[%(asctime)s] [%(levelname)s] %(name)s - %(message)s"
-LOGGING_LEVEL = logging.DEBUG
+LOGGING_LEVEL = logging.INFO
 
 handler = logging.StreamHandler()
 handler.setFormatter(logging.Formatter(FORMAT_STRING))
@@ -30,14 +33,14 @@ def getuserinfo(username):
     resp = requests.get(api.api_url(p))
     # parse response
     user = resp.json()
-    p = "client/" + str(user["id"])
+    p = "clients/" + str(user["id"])
     resp = requests.get(api.api_url(p))
     userinfo = resp.json()
     return userinfo
 
 
 def getuserresults(id):
-    p = "clients/" + id + "/results/all"
+    p = "clients/" + str(id) + "/results/all"
     resp = requests.get(api.api_url(p))
     # parse response
     results = resp.json()
@@ -55,7 +58,7 @@ def currentinfo(s, userinfo):
     if flask.request.form[s] != "":
         return flask.request.form[s]
     else:
-        return userinfo["bio"]
+        return userinfo[s]
 
 
 def getconnections(q, m):
@@ -66,22 +69,22 @@ def getconnections(q, m):
 
 
 def makeconnection(q, m, s):
-    requests.post(api.api_url(q + "_connections"), params={q: s, "mood": m})
+    requests.post(api.api_url(q + "s_connections"), json={q: s, "mood": m})
     # parse response
     return
 
 
 def newuser(username):
-    requests.post(api.api_url("users/"), data={"username": username})
-    newuser = requests.get(api.api_url("usernames/" + username))
+    requests.post(api.api_url("users/"), json={"username": username})
+    newuser = requests.get(api.api_url("usernames/" + username)).json()
     # make a new, empty profile
     newuserdata = {
-        "birthday": None,
-        "email": "",
-        "displayName": "",
-        "bio": "",
+        "birthday": "YYYY/MM/DD",
+        "email": "email",
+        "displayName": "display name",
+        "bio": "biography",
     }
-    requests.put(api.api_url("clients/" + newuser["id"]), data=newuserdata)
+    requests.put(api.api_url("clients/" + str(newuser["id"])), json=newuserdata)
     return
 
 
@@ -101,8 +104,11 @@ def create_app() -> flask.Flask:
 
     @app.route("/profile/<username>")
     def _profile(username) -> str:
-        userinfo = getuserinfo(username)
-        results = getuserresults(userinfo["id"])
+        try:
+            userinfo = getuserinfo(username)
+            results = getuserresults(userinfo["id"])
+        except:
+            flask.abort(404)
         print(results)
         return flask.render_template(
             "profile.html", username=username, userinfo=userinfo, results=results
@@ -115,9 +121,8 @@ def create_app() -> flask.Flask:
             username = flask.request.form["username"]
 
             # check if they are a new user. if they are, makes a new, empty profile
-            try:
-                requests.get(api.api_url("usernames/" + username))
-            except:
+            response = requests.get(api.api_url("usernames/" + username))
+            if not response.ok:
                 newuser(username)
 
             return flask.redirect(flask.url_for("_profile", username=username))
@@ -134,8 +139,8 @@ def create_app() -> flask.Flask:
                 "scent": "",
                 "color": "",
                 "shape": "",
-                "media_genre": "",
-                "music_genre": "",
+                "media": "",
+                "music": "",
             }
 
             # get their mood
@@ -155,8 +160,8 @@ def create_app() -> flask.Flask:
                 "scent",
                 "taste",
                 "shape",
-                "media_genre",
-                "music_genre",
+                "media",
+                "music",
             ]:
                 # get value from the radio buttons
                 selected = flask.request.form[q]
@@ -166,7 +171,7 @@ def create_app() -> flask.Flask:
                     selected = qualia_connections[0][q]
                 # if they did then we make a connection with that
                 else:
-                    makeconnection((q + "s"), selected_mood, selected)
+                    makeconnection(q, selected_mood, selected)
                     print(
                         "made connection: ", q + ": " + selected, "  " + selected_mood
                     )
@@ -175,11 +180,12 @@ def create_app() -> flask.Flask:
 
             # now we put the result in the database for the client using the API
             username = flask.request.form["username"]
+            if not username:
+                return flask.redirect(flask.url_for("_quiz"))
 
             # check if they are a new user. if they are, makes a new, empty profile
-            try:
-                requests.get(api.api_url("usernames/" + username))
-            except:
+            response = requests.get(api.api_url("usernames/" + username))
+            if not response.ok:
                 newuser(username)
 
             # now there is a user id to get B)
@@ -187,8 +193,8 @@ def create_app() -> flask.Flask:
 
             print(client_result)
             requests.post(
-                api.api_url("client/" + str(userinfo["id"]) + "/results/"),
-                data=client_result,
+                api.api_url("clients/" + str(userinfo["id"]) + "/results/"),
+                json=client_result,
             )
             ## --- end
 
@@ -199,8 +205,8 @@ def create_app() -> flask.Flask:
         scents = getqualia("scents")
         tastes = getqualia("tastes")
         shapes = getqualia("shapes")
-        media_genres = getqualia("media_genres")
-        music_genres = getqualia("music_genres")
+        medias = getqualia("medias")
+        musics = getqualia("musics")
         return flask.render_template(
             "quiz.html",
             moods=moods,
@@ -208,8 +214,8 @@ def create_app() -> flask.Flask:
             scents=scents,
             tastes=tastes,
             shapes=shapes,
-            media_genres=media_genres,
-            music_genres=music_genres,
+            medias=medias,
+            musics=musics,
         )
 
     @app.route("/<username>/edit", methods=["GET", "POST"])
@@ -217,7 +223,7 @@ def create_app() -> flask.Flask:
         userinfo = getuserinfo(username)
         if flask.request.method == "POST":
             bio = currentinfo("bio", userinfo)
-            displayname = currentinfo("name", userinfo)
+            displayname = currentinfo("displayName", userinfo)
 
             email = currentinfo("email", userinfo)
             birthday = currentinfo("birthday", userinfo)
@@ -227,7 +233,8 @@ def create_app() -> flask.Flask:
                 "displayName": displayname,
                 "bio": bio,
             }
-            requests.post(api.api_url("client/" + str(userinfo["id"])), data=data)
+            logger.info("Sending data %s", data)
+            requests.put(api.api_url("clients/" + str(userinfo["id"])), json=data)
             return flask.redirect(flask.url_for("_profile", username=username))
         return flask.render_template(
             "editprofile.html", username=username, userinfo=userinfo

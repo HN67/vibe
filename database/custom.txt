@@ -55,8 +55,8 @@ Input: {
     "scent": string,
     "color": string,
     "shape": string,
-    "media_genre": string,
-    "music_genre": string,
+    "media": string,
+    "music": string,
 }
 Output: {"client": int}
 
@@ -72,8 +72,8 @@ Output: {"client": int}
         "scent": string,
         "color": string,
         "shape": string,
-        "media_genre": string,
-        "music_genre": string,
+        "media": string,
+        "music": string,
     }
 
     Description: Get all results for a client
@@ -88,8 +88,8 @@ Output: {"client": int}
         "scent": string,
         "color": string,
         "shape": string,
-        "media_genre": string,
-        "music_genre": string,
+        "media": string,
+        "music": string,
     }]
 
     Description: Delete a result for a client
