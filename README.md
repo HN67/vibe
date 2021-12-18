@@ -3,9 +3,22 @@
 A project to provide methods to unify different and unique
 sensory experiences into cohesive collections.
 
-## Python Flask Site
+The project has two main components,
+a Flask application that serves a website,
+and a relational MariaDB database server.
+
+## Directory Structure
+
+The root repository is `vibe`.
+The Flask application is contained in `site`,
+and the folder `database` contains various SQL scripts, codes,
+and API informational files.
+
+## Site
 
 ### Setup
+
+Flask is used to host the website.
 
 Create a Python virtual environment using `python -m venv .venv`,
 and then activate according to platform.
@@ -14,21 +27,7 @@ Install various packages by running `pip install -r requirements.txt`,
 which installs Flask and several developement aids
 (which VSCode will use if you include the `.vscode` folder that is checked in).)
 
-The project was set up using Python 3.10
-
-### Directory Structure
-
-The root repository is `vibe`, which then contains a folder called `site`
-which contains the Flask site. This folder can be easily renamed.
-
-### Running
-
-A flask debug server can be run from the `site` directory with `flask run`,
-which starts a server on localhost.
-
-Making the site available on other hosts requires hosting on the external interface,
-for example my pi currently has an address of `192.168.1.64`,
-so the site should be started with `flask run -h 192.168.1.64`.
+The project should be able to run on Python 3.7 and above.
 
 The site requires a configuration file to run, named `config.toml` in the `site` directory.
 This config file should contain a `[database]` section with connection parameters.
@@ -44,9 +43,19 @@ port=3306
 database="vibe"
 ```
 
+### Running
+
+A Flask server can be run from the `site` directory with `flask run`.
+
+Making the site available on other hosts requires hosting on the external interface,
+for example my pi currently has an address of `192.168.1.64`,
+so the site should be started with `flask run -h 192.168.1.64`.
+
+The Flask application serves both the website and the API.
+
 ### API Usage
 
-API endpoints can be used as described in `api.txt`.
+API endpoints can be used as described in `database/api.txt`.
 
 Inputs to GET requests take the form of parameters,
 and inputs to other requests take the form of a JSON body.
@@ -61,17 +70,20 @@ indicates their ability to create and delete respectively.
 
 ## MariaDB Database
 
-MariaDB can be installed on a Linux system
-using an equivalent of `sudo apt-get install mariadb-server`.
+### Server Setup
 
-See <https://mariadb.com/kb/en/starting-and-stopping-mariadb-automatically/>
+MariaDB can be installed on a Linux system
+using the equivalent of `sudo apt-get install mariadb-server`.
 
 Starting the server can be done with
 `sudo systemctl start mariadb.service`,
 and enabling it to start on boot can be done with
 `sudo systemctl enable mariadb.service`.
 
-See <https://mariadb.com/kb/en/mariadb-basics/>
+The database server should be created with a fully privileged user `root`,
+with a blank password.
+
+### Database Setup
 
 The database was created with `CREATE DATABASE vibe;`
 
@@ -88,25 +100,25 @@ Log in as `root` with `mysql -u root -p` (password is blank, press enter).
 May instead need to do `mysql -u root -h localhost -p`.
 
 `SHOW DATABASES;` will list the databases on the server,
-`mysql.user` is a table containing various user data,
-e.g. `User` is the name of users.
-
-`User, Db, Host` from `mysql.db` somewhat shows priveleges of users.
+`mysql.user` is a table containing various user data.
 
 When connecting to the database,
-can connect from the same machine,
-using user `site`, host `localhost`, database `vibe`, and port `7777`
-(not clear on the significance of the port, just choose it randomly),
-and appropriate password for the user `site`.
+the user `site` can be used to connect from LAN,
+using port `3306` to database `vibe`.
 
-To actually setup up the database,
-connect with `mysql -u root -D vibe` to automatically use `vibe`.
+Database configuration and setup can be done with
+the various provided SQL files,
+`database/tables.sql` and `database/procedures.sql`.
 
-The `SOURCE` SQL command should be able to be used to execute
-large files, e.g. `tables.sql` and `procedures.sql`.
+This files can be loaded from the command line,
+e.g. by running `mysql -u root < database/tables.sql`.
+
+`tables.sql` will create the neccesary tables,
+and `procedures.sql` will create and update the stored procedures
+that are used by the API.
 
 ### Database Configuration
 
 In order to allow connections from LAN,
-edited the configuration file `/etc/mysql/mariadb.conf.d/50-server.cnf`
-and changed `bind-address=127.0.0.1` to `0.0.0.0`.
+edit the configuration file `/etc/mysql/mariadb.conf.d/50-server.cnf`
+and change `bind-address=127.0.0.1` to `0.0.0.0`.
